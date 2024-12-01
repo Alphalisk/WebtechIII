@@ -1,7 +1,10 @@
 :root {
     --buttongreen: #1deb76;
+    --buttondarkgreen: #0d793c;
+    --buttonpurple: #c026a9;
     --bordergray: rgb(207, 207, 207);
     --memoryboxgreen: #84ffb9;
+    --borderblack: rgb(63, 63, 63);
     --blue: #1e90ff;
     --white: #ffffff;
 }
@@ -25,13 +28,20 @@
     font-family: "Lucida Sans", sans-serif;
   }
   
-  /* For mobile phones: */
-  [class*="col-"] {
+/* For mobile phones: */
+[class*="col-"] {
     width: 100%;
-  }
+}
+.whitespace {
+    padding: 20px;
+}
+
+.whitespace-sm {
+    padding: 10px;
+}
   
-  /* For desktop: */
-  @media only screen and (min-width: 768px) {
+/* For desktop: */
+@media only screen and (min-width: 768px) {
     .col-1 {width: 8.33%;}
     .col-2 {width: 16.66%;}
     .col-3 {width: 25%;}
@@ -48,7 +58,15 @@
     .sidebar {
         padding-top: 200px;
     }
-  }
+
+    .whitespace {
+        padding: 60px;
+    }
+
+    .whitespace-sm {
+        padding: 30px;
+    }
+}
 
 .center {
     text-align: center;
@@ -64,13 +82,14 @@
 
 .grid-container {
     display: grid;
+    max-width: 500px;
     grid-template-columns: auto auto auto auto auto auto;
     background-color: var(--memoryboxgreen);
 }
 
 .grid-item {
     border: 3px solid var(--white);
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bold;
     color:var(--white);
     display: flex;
@@ -78,3 +97,57 @@
     align-items: center;
     aspect-ratio: 1;
 }
+
+.open {
+    background-color: var(--buttondarkgreen);
+}
+
+.gevonden {
+    background-color: var(--buttonpurple);
+}
+
+.kleurselectie {
+    background: linear-gradient(to bottom,var(--white), var(--bordergray));
+    border: 1px var(--borderblack) solid;
+    width: 110px;
+    height: 20px;
+    text-align: center;
+
+    border-radius: 5px;
+}
+
+.kleurweergave1 {
+    background-color: var(--buttongreen);
+    border: 1px solid var(--bordergray);
+    width: 110px; 
+    height: 20px;
+    text-align: center;
+
+}
+
+.kleurweergave2 {
+    background-color: var(--buttondarkgreen);
+    border: 1px solid var(--bordergray);
+    width: 110px; 
+    height: 20px;
+    text-align: center;
+
+}
+
+.kleurweergave3 {
+    background-color: var(--buttonpurple);
+    border: 1px solid var(--bordergray);
+    width: 110px; 
+    height: 20px;
+    text-align: center;
+
+}
+
+table {
+border-spacing: 1px;
+}
+
+/* td {
+    padding-bottom: 0.001px;
+    padding-right: 0.001px;
+} */

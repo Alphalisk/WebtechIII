@@ -13,7 +13,7 @@
     </head>
     <body>
         <div class="row">
-            <div class="col-8">
+            <div class="col-8 center">
                 <div>
                     <h1 class="center">Javascript Memory</h1>
                     <p class="center">
@@ -23,18 +23,17 @@
                         <button class="toontijd"></button>
                     </p>
                 </div>
-            
                 <div class="grid-container">
                     <div class="grid-item">◆</div>
+                    <div class="grid-item gevonden">E</div>
+                    <div class="grid-item gevonden">E</div>
                     <div class="grid-item">◆</div>
                     <div class="grid-item">◆</div>
                     <div class="grid-item">◆</div>
                     <div class="grid-item">◆</div>
                     <div class="grid-item">◆</div>
                     <div class="grid-item">◆</div>
-                    <div class="grid-item">◆</div>
-                    <div class="grid-item">◆</div>
-                    <div class="grid-item">◆</div>
+                    <div class="grid-item open">M</div>
                     <div class="grid-item">◆</div>
                     <div class="grid-item">◆</div>
                     <div class="grid-item">◆</div>
@@ -74,7 +73,7 @@
                     <li>Jeb Bush:600</li>
                 </ol>
                 <b>Gemiddelde speeltijd: </b>0s (64s)
-                <br>
+                <br><br>
                 <label for="karakter"><b>Karakter op kaarten:</b></label>
                 <select name="karakter" id="karakter">
                 <option value="*">*</option>
@@ -89,8 +88,24 @@
                 <option value="6">6</option>
                 <option value="8">8</option>
                 </select><br>
+                <div class="whitespace"></div>
+                <table>
+                    <tr>
+                        <td><button class="kleurselectie">Kaartkleur</button></td>
+                        <td><button class="kleurweergave1"></button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="kleurselectie">Open</button></td>
+                        <td><button class="kleurweergave2"></button></td>
+                    </tr>
+                    <tr>
+                        <td><button class="kleurselectie">Gevonden</button></td>
+                        <td><button class="kleurweergave3"></button></td>
+                    </tr>
+                </table>
+                <div class="whitespace-sm"></div>
+                <td><button class="kleurselectie">Nieuw Spel</button></td>
             </div>
-
         </div>
     </body>
 </html>
