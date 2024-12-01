@@ -5,6 +5,7 @@
     --bordergray: rgb(207, 207, 207);
     --memoryboxgreen: #84ffb9;
     --borderblack: rgb(63, 63, 63);
+    --timerblue:rgb(79, 167, 255);
     --blue: #1e90ff;
     --white: #ffffff;
 }
@@ -13,7 +14,7 @@
     box-sizing: border-box;
   }
   
-  .row::after {
+  main::after {
     content: "";
     clear: both;
     display: table;
@@ -70,19 +71,37 @@
 
 .center {
     text-align: center;
+    margin: 0;
+    position: relative;
+    left: 50%;
+    -ms-transform: translate(-50%);
+    transform: translate(-50%);
 }
 
 .toontijd {
-    padding: 2px;
     background-color: var(--buttongreen);
     width: 200px; 
     height: 20px;
     border: 2px solid var(--bordergray);
 }
 
+@keyframes timer {
+    from { width: 0; }
+    to { width: 100%; }
+}
+  
+.timer {
+    max-width: 200px;
+    height: 16px;
+    border:none;
+    background-color: var(--timerblue);
+    animation: timer 60s linear infinite;
+}
+
+
 .grid-container {
     display: grid;
-    max-width: 500px;
+    max-width: 600px;
     grid-template-columns: auto auto auto auto auto auto;
     background-color: var(--memoryboxgreen);
 }
@@ -147,7 +166,3 @@ table {
 border-spacing: 1px;
 }
 
-/* td {
-    padding-bottom: 0.001px;
-    padding-right: 0.001px;
-} */
