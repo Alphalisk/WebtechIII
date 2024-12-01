@@ -6,7 +6,6 @@
     --memoryboxgreen: #84ffb9;
     --borderblack: rgb(63, 63, 63);
     --timerblue:rgb(79, 167, 255);
-    --blue: #1e90ff;
     --white: #ffffff;
 }
 
@@ -131,32 +130,14 @@
     width: 110px;
     height: 20px;
     text-align: center;
-
     border-radius: 5px;
 }
 
-.kleurweergave1 {
+.kleurweergave {
     border: 1px solid var(--bordergray);
     width: 110px; 
     height: 20px;
-}
-
-.kleurweergave2 {
-    background-color: var(--buttondarkgreen);
-    border: 1px solid var(--bordergray);
-    width: 110px; 
-    height: 20px;
-    text-align: center;
-
-}
-
-.kleurweergave3 {
-    background-color: var(--buttonpurple);
-    border: 1px solid var(--bordergray);
-    width: 110px; 
-    height: 20px;
-    text-align: center;
-
+    padding:0;
 }
 
 table {
