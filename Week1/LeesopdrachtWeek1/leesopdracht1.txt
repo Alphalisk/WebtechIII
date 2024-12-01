@@ -1,0 +1,39 @@
+---------------------------Vraag 1----------------------------------
+
+Lees het artikel over webtoegankelijkheid en beantwoord de volgende vragen in een korte alinea per vraag.
+
+a. Probeer je voor te stellen dat je niet (meer) kunt zien, maar wel je favoriete site wilt bezoeken. 
+Welke van de in het artikel genoemde frustratie over (on)toegankelijkheid lijkt jou het meest belemmerend? En waarom?
+
+    Het laatste punt, auto playing audio en video, lijkt me het meest belemmerend. 
+    Als je op een website komt en je bent visueel beperkt, dan is het moeilijk om te achterhalen wat er uit gezet moet worden.
+    Omdat je afhankelijk bent van gesproken tekst is het niet te verstaan hoe de website in elkaar zit, en heeft het geen zin om verder op de site te surfen.
+    Vooral als de knoppen dan niet gelabelled zijn voor snelle interactie.
+
+
+b. Kom je als ziend persoon ook wel eens dingen tegen die jou belemmeren in het correct gebruiken van een website? 
+Beschrijf kort wat je tegenkomt en hoe jij dit beter zou willen doen.
+
+     De belemmering die ik heb is dat er vaak teveel verschil is tussen de mobile en desktop-design. 
+    Zelf ben ik vooral gewend om op desktop het internet te surfen, echter als ik op de mobile kom dan is het vaak een stuk lastiger om de opties van een website te benaderen.
+    Veelal zijn functies als drop-downs menu verstopt in symbolen waarvan de gebruiker maar moet raden waar die zit.
+    Nog een voorbeeld een pop-up- of drop-downvenster met informatie. Deze is vaak veel te groot en zit al snel in de weg op een mobile interface.
+    Wat ik graag verandert wil zien is dat er niet te verschil is tussen de layout van een mobile en een desktop-interface.
+    En dat er rekening gehouden wordt met pop-up en drop-downvensters op een mobiele omgeving. Dit moet gebruiksvriendelijk geimplementeerd worden.
+
+---------------------------Vraag 2----------------------------------
+
+Lees het artikel over responsive web design (of hier als bestand) en beantwoord de volgende vraag in een korte alinea.
+Er zijn twee benaderingen als het gaat om responsive web design: mobile-first of desktop-first. 
+Niet iedereen is het eens over welke de voorkeur zou moeten hebben, alhoewel de één wellicht populairder is dan de ander. 
+Dit artikel betoogt een duidelijke voorkeur. 
+Ben jij het met de schrijver van het artikel eens? 
+Leg uit waarom je het hier wel of niet mee eens bent met behulp van een argument dat in het artikel wordt genoemd.
+
+     Ik ben het eens met de schrijver van het artikel dat het goed is om mobile-first websites te ontwikkelen. 
+    We leven in een maatschappij waar er een groot en groeiend aantal gebruikers gebruik maakt van mobile.
+    Tegenwoordig zijn er zelfs meer gebruikers op de mobile dan op de desktop. Dat geeft opzichzelfstaand al genoeg reden om mobile first websites te ontwikkelen.
+    Daarnaast geeft de schrijver van het artikel aan dat het minder redundant code kost om mobile first websites te ontwikkelen.
+    Bij de desktop-first methode wordt er bijvoorbeeld vaak gebruik gemaakt van flexibele displays, backgroundcolors en andere styling. 
+    Deze kunnen voor de mobiele interface weer teruggezet worden naar default. Echter door mobile-first te ontwikkelen, is de default al ingesteld wat dubbele code voorkomt.
+
