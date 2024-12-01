@@ -57,7 +57,7 @@
     .col-12 {width: 100%;}
 
     .sidebar {
-        padding-top: 200px;
+        padding-top: 150px;
     }
 
     .whitespace {
@@ -136,12 +136,9 @@
 }
 
 .kleurweergave1 {
-    background-color: var(--buttongreen);
     border: 1px solid var(--bordergray);
     width: 110px; 
     height: 20px;
-    text-align: center;
-
 }
 
 .kleurweergave2 {
@@ -163,6 +160,6 @@
 }
 
 table {
-border-spacing: 1px;
+    border-spacing: 1px;
 }
 
