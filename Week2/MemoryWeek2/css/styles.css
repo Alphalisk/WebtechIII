@@ -135,3 +135,40 @@ table {
     border-spacing: 1px;
 }
 
+/* Modaal: standaard verborgen */
+.modal {
+    display: none; /* Start verborgen */
+    position: fixed; /* Blijft op de plek */
+    z-index: 1; /* Zorgt dat het boven andere elementen komt */
+    left: 0;
+    top: 0;
+    width: 100%; /* Volledig scherm */
+    height: 100%; /* Volledig scherm */
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparante achtergrond */
+}
+
+/* Modale content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Je kunt de breedte aanpassen */
+    text-align: center;
+}
+
+/* Sluitknop in de rechterbovenhoek */
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+

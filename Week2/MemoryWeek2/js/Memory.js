@@ -1,3 +1,7 @@
+/*
+Hier worden alle variabelen gedeclareerd en eventueel geinitialiseerd.
+*/
+
 // Variabelen voor spel
 let boardSize = 36;  // Het aantal kaarten (6x6 grid)
 let letters = [];
@@ -16,6 +20,11 @@ const grid = document.querySelector('.grid-container');
 const timerElement = document.querySelector('.timer');
 const scoreElement = document.querySelector('.score');
 const startButton = document.querySelector('.start-button');
+
+
+/*
+Hier is een verzameling van alle gebruikte functies.
+*/
 
 // Functie om willekeurige letters te genereren
 function generateRandomLetters() {
@@ -160,7 +169,22 @@ function compareCards() {
 // Eindig het spel
 function endGame() {
     clearInterval(timerInterval);
-    alert(`Gefeliciteerd! Je hebt het spel in ${Math.floor((Date.now() - startTime) / 1000)} seconden voltooid.`);
+
+    // Haal de tijd op
+    const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+    
+    // Toon het tijdstip in het modale venster
+    document.getElementById('final-time').textContent = timeTaken;
+
+    // Zet het modaal venster in de "zichtbaar" status
+    const modal = document.getElementById('winModal');
+    modal.style.display = 'block'; // Maak het modaal zichtbaar
+}
+
+// Functie om het modale venster te sluiten wanneer de gebruiker op de sluitknop klikt
+function closeModal() {
+    const modal = document.getElementById('winModal');
+    modal.style.display = 'none'; // Verberg het modaal
 }
 
 // Functie om het spel opnieuw te starten
@@ -176,6 +200,12 @@ function resetGame() {
     startTimer();
 }
 
+
+
+/*
+Hier is een verzameling van eventlisteners.
+*/
+
 // Voeg event listeners toe om de kleuren toe te passen wanneer ze worden gewijzigd
 kaartkleurInput.addEventListener('input', applyCardColors);
 openKleurInput.addEventListener('input', applyCardColors);
@@ -184,8 +214,25 @@ gevondenKleurInput.addEventListener('input', applyCardColors);
 // Roep de functie aan bij het laden van de pagina om de initiële kleuren toe te passen
 window.addEventListener('load', applyCardColors);
 
+// Voeg een event listener toe voor de sluitknop
+document.querySelector('.close-btn').addEventListener('click', closeModal);
+
+// Voeg een event listener toe om het modaal te sluiten als de gebruiker ergens buiten het modaal klikt
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('winModal');
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+
 // Start het spel als de speler op de startknop klikt
 startButton.addEventListener('click', resetGame);
+
+
+
+/*
+Dit zijn de initialisaties voor het javascript zelf.
+*/
 
 // Initialiseer het spel
 generateRandomLetters();
