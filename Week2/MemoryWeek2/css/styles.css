@@ -102,7 +102,6 @@
     display: grid;
     max-width: 600px;
     grid-template-columns: auto auto auto auto auto auto;
-    background-color: var(--memoryboxgreen);
 }
 
 .grid-item {
