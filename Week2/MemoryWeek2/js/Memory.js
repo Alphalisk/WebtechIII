@@ -6,6 +6,11 @@ let foundPairs = 0;
 let startTime;
 let timerInterval;
 
+// Verkrijg de kleurkeuzers uit de DOM
+const kaartkleurInput = document.getElementById('kaartkleur');
+const openKleurInput = document.getElementById('open');
+const gevondenKleurInput = document.getElementById('gevonden');
+
 // HTML-elementen
 const grid = document.querySelector('.grid-container');
 const timerElement = document.querySelector('.timer');
@@ -43,11 +48,14 @@ function buildBoard() {
         const card = document.createElement('div');
         card.classList.add('grid-item');
         card.dataset.index = i;
-        card.style.backgroundColor = '#0d793c'; // Gesloten kaartkleur
+        card.style.backgroundColor = kaartkleurInput.value || '#0d793c'; // Gesloten kaartkleur
         card.textContent = '';  // Geen letter aan het begin
         card.addEventListener('click', handleCardClick);
         grid.appendChild(card);
     }
+
+    // Pas de kleuren van de kaarten aan zodra ze zijn toegevoegd
+    applyCardColors();
 }
 
 // Timer-functie
@@ -57,6 +65,40 @@ function startTimer() {
         const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
         timerElement.textContent = `${elapsedTime} seconden`;
     }, 1000);
+}
+
+// Functie om het aantal gevonden kaartparen weer te geven
+function updateFoundPairsDisplay() {
+    const foundPairsDisplay = document.getElementById('foundPairsDisplay');
+    foundPairsDisplay.textContent = foundPairs;  // Update de display met de nieuwe waarde
+}
+
+// Functie om de kleuren toe te passen
+function applyCardColors() {
+    // Verkrijg de geselecteerde kleuren
+    const kaartkleur = kaartkleurInput.value;
+    const openKleur = openKleurInput.value;
+    const gevondenKleur = gevondenKleurInput.value;
+
+    // Verkrijg alle grid-items (de kaarten)
+    const gridItems = grid.querySelectorAll('.grid-item');
+
+    gridItems.forEach(item => {
+        // Stel de kleur van de gesloten kaarten in
+        if (!item.classList.contains('open') && !item.classList.contains('gevonden')) {
+            item.style.backgroundColor = kaartkleur;
+        }
+
+        // Stel de kleur van de open kaarten in
+        if (item.classList.contains('open')) {
+            item.style.backgroundColor = openKleur;
+        }
+
+        // Stel de kleur van de gevonden kaarten in
+        if (item.classList.contains('gevonden')) {
+            item.style.backgroundColor = gevondenKleur;
+        }
+    });
 }
 
 // Functie voor het klikken op een kaart
@@ -70,7 +112,7 @@ function handleCardClick(event) {
 
     // Toon letter
     card.textContent = letters[cardIndex];
-    card.style.backgroundColor = '#1deb76'; // Open kaartkleur
+    card.style.backgroundColor = openKleurInput.value || '#1deb76'; // Open kaartkleur
 
     // Voeg de kaart toe aan de lijst van geopende kaarten
     openedCards.push(card);
@@ -92,13 +134,16 @@ function compareCards() {
 
     if (card1.textContent === card2.textContent) {
         // Als de kaarten overeenkomen, markeer ze als gevonden
-        card1.style.backgroundColor = '#c026a9';
-        card2.style.backgroundColor = '#c026a9';
+        card1.style.backgroundColor = gevondenKleurInput.value || '#c026a9';
+        card2.style.backgroundColor = gevondenKleurInput.value || '#c026a9';
+        card1.classList.add('gevonden');
+        card2.classList.add('gevonden');
         foundPairs++;
+        updateFoundPairsDisplay();
     } else {
         // Als de kaarten niet overeenkomen, draai ze weer om
-        card1.style.backgroundColor = '#0d793c';
-        card2.style.backgroundColor = '#0d793c';
+        card1.style.backgroundColor = kaartkleurInput.value || '#0d793c';
+        card2.style.backgroundColor = kaartkleurInput.value || '#0d793c';
         card1.textContent = '';
         card2.textContent = '';
     }
@@ -121,6 +166,7 @@ function endGame() {
 // Functie om het spel opnieuw te starten
 function resetGame() {
     foundPairs = 0;
+    updateFoundPairsDisplay();
     openedCards = [];
     letters = [];
     generateRandomLetters();
@@ -129,6 +175,14 @@ function resetGame() {
     timerElement.textContent = '0 seconden';
     startTimer();
 }
+
+// Voeg event listeners toe om de kleuren toe te passen wanneer ze worden gewijzigd
+kaartkleurInput.addEventListener('input', applyCardColors);
+openKleurInput.addEventListener('input', applyCardColors);
+gevondenKleurInput.addEventListener('input', applyCardColors);
+
+// Roep de functie aan bij het laden van de pagina om de initiële kleuren toe te passen
+window.addEventListener('load', applyCardColors);
 
 // Start het spel als de speler op de startknop klikt
 startButton.addEventListener('click', resetGame);
