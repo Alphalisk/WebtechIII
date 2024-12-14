@@ -77,12 +77,12 @@
     transform: translate(-50%);
 }
 
-.toontijd {
+/* .toontijd {
     background-color: var(--buttongreen);
     width: 200px; 
     height: 20px;
     border: 2px solid var(--bordergray);
-}
+} */
 
 /* @keyframes timer {
     from { width: 0; }
@@ -113,14 +113,6 @@
     justify-content: center;
     align-items: center;
     aspect-ratio: 1;
-}
-
-.open {
-    background-color: var(--buttondarkgreen);
-}
-
-.gevonden {
-    background-color: var(--buttonpurple);
 }
 
 .kleurselectie {

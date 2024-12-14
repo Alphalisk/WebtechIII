@@ -49,7 +49,7 @@ function buildBoard() {
         card.classList.add('grid-item');
         card.dataset.index = i;
         card.style.backgroundColor = kaartkleurInput.value || '#0d793c'; // Gesloten kaartkleur
-        card.textContent = '';  // Geen letter aan het begin
+        card.textContent = '◆';  // Geen letter aan het begin
         card.addEventListener('click', handleCardClick);
         grid.appendChild(card);
     }
@@ -106,7 +106,7 @@ function handleCardClick(event) {
     const card = event.target;
 
     // Negeer klikken op reeds geopende of gevonden kaarten
-    if (card.textContent !== '' || openedCards.length === 2) return;
+    if (card.textContent !== '◆' || openedCards.length === 2) return;
 
     const cardIndex = card.dataset.index;
 
@@ -144,8 +144,8 @@ function compareCards() {
         // Als de kaarten niet overeenkomen, draai ze weer om
         card1.style.backgroundColor = kaartkleurInput.value || '#0d793c';
         card2.style.backgroundColor = kaartkleurInput.value || '#0d793c';
-        card1.textContent = '';
-        card2.textContent = '';
+        card1.textContent = '◆';
+        card2.textContent = '◆';
     }
 
     // Reset de geopende kaarten
