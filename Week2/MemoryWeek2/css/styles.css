@@ -84,18 +84,18 @@
     border: 2px solid var(--bordergray);
 }
 
-@keyframes timer {
+/* @keyframes timer {
     from { width: 0; }
     to { width: 100%; }
-}
+} */
   
-.timer {
+/* .timer {
     max-width: 200px;
     height: 16px;
     border:none;
     background-color: var(--timerblue);
     animation: timer 60s linear infinite;
-}
+} */
 
 
 .grid-container {

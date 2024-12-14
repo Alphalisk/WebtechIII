@@ -55,7 +55,7 @@ function startTimer() {
     startTime = Date.now();
     timerInterval = setInterval(() => {
         const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-        timerElement.textContent = `Tijd: ${elapsedTime} seconden`;
+        timerElement.textContent = `${elapsedTime} seconden`;
     }, 1000);
 }
 
@@ -126,7 +126,8 @@ function resetGame() {
     generateRandomLetters();
     buildBoard();
     clearInterval(timerInterval);
-    timerElement.textContent = 'Tijd: 0 seconden';
+    timerElement.textContent = '0 seconden';
+    startTimer();
 }
 
 // Start het spel als de speler op de startknop klikt
