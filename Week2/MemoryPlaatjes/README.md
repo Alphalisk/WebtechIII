@@ -1,4 +1,4 @@
-Om de website openen dient een liveserver gestart te worden. Anders werkt de import functionaliteit niet.
+Om de website openen dient een liveserver gestart te worden. Anders werkt de import en export functionaliteit niet.
 
 Hierbij de stappen vanuit VSCode:
 1. Gebruik VS Code met de extensie "Live Server"

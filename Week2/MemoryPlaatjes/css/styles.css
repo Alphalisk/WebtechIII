@@ -41,7 +41,7 @@
 }
   
 /* For desktop: */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 920px) {
     .col-1 {width: 8.33%;}
     .col-2 {width: 16.66%;}
     .col-3 {width: 25%;}
@@ -72,14 +72,15 @@
     text-align: center;
     margin: 0;
     position: relative;
-    left: 50%;
+    left: 45%;
     -ms-transform: translate(-50%);
     transform: translate(-50%);
 }
 
 .grid-container {
     display: grid;
-    max-width: 500px;
+    max-width: 100vh;
+    max-height: 100vh;
     grid-template-rows: repeat(6, 13vh);/* Vaste hoogte voor rijen */
     grid-template-columns: repeat(6, 13vh); /* Twee kolommen met gelijke breedte */
     /* grid-row-gap: 2vh;
