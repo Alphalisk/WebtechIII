@@ -34,3 +34,22 @@ function buildBoard() {
         grid.appendChild(card);
     }
 }
+
+function handleCardClick(event) {
+    const card = event.target.closest('.grid-item'); // Zorg dat alleen op kaarten wordt geklikt
+    const cardImage = card.querySelector('img');
+
+    // Controleer of de kaart al geopend is
+    if (cardImage.style.display === 'block' || openedCards.length === 2) return;
+
+    // Toon de afbeelding
+    cardImage.style.display = 'block';
+
+    // Voeg de kaart toe aan geopende kaarten
+    openedCards.push(card);
+
+    if (openedCards.length === 2) {
+        setTimeout(compareCards, 500);
+    }
+}
+
