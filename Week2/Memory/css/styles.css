@@ -80,14 +80,15 @@
 .grid-container {
     display: grid;
     max-width: 600px;
-    grid-template-rows: 10vh 10vh 10vh 10vh 10vh 10vh; /* Vaste hoogte voor rijen */
-    grid-template-columns: 10vh 10vh 10vh 10vh 10vh 10vh; /* Twee kolommen met gelijke breedte */
-    grid-row-gap: 2vh;
-    grid-column-gap: 2vh;
+    grid-template-rows: repeat(6, 10vh);/* Vaste hoogte voor rijen */
+    grid-template-columns: repeat(6, 10vh); /* Twee kolommen met gelijke breedte */
+    /* grid-row-gap: 2vh;
+    grid-column-gap: 2vh; */
 }
 
 /* Zorg dat de grid-items een vierkante vorm hebben */
 .grid-item {
+    border: 3px solid var(--white);
     font-size: 15px;
     font-weight: bold;
     color:var(--white);
