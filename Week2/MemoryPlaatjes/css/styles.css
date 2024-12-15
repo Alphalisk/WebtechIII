@@ -41,7 +41,7 @@
 }
   
 /* For desktop: */
-@media only screen and (min-width: 920px) {
+@media only screen and (min-width: 768px) {
     .col-1 {width: 8.33%;}
     .col-2 {width: 16.66%;}
     .col-3 {width: 25%;}
@@ -79,12 +79,9 @@
 
 .grid-container {
     display: grid;
-    max-width: 100vh;
-    max-height: 100vh;
-    grid-template-rows: repeat(6, 13vh);/* Vaste hoogte voor rijen */
-    grid-template-columns: repeat(6, 13vh); /* Twee kolommen met gelijke breedte */
-    /* grid-row-gap: 2vh;
-    grid-column-gap: 2vh; */
+    max-width: 42rem;
+    grid-template-rows: repeat(6, 1fr);/* Vaste hoogte voor rijen */
+    grid-template-columns: repeat(6, 1fr); /* Twee kolommen met gelijke breedte */
 }
 
 /* Zorg dat de grid-items een vierkante vorm hebben */
