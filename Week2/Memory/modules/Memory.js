@@ -1,5 +1,5 @@
 import { fetchImages } from './api.js';
-import { setCardColor, shuffleArray, getElement, resetCards } from './utilities.js';
+import { setCardColor, shuffleArray, getElement, resetCards, formatTime  } from './utilities.js';
 
 // DOM-elementen en globale variabelen
 const grid = getElement('.grid-container');
@@ -10,10 +10,37 @@ const imageSourceSelector = getElement('#imageSource');
 const foundPairsDisplay = getElement('#foundPairsDisplay');
 const startButton = getElement('.start-button');
 
+let timerInterval = null;
+let startTime = null;
 let boardSize = 36; // Standaard 6x6
 let openedCards = [];
 let foundPairs = 0;
 let images = [];
+
+// Start de timer
+function startTimer() {
+    if (timerInterval) return; // Timer al gestart
+
+    startTime = Date.now();
+    timerInterval = setInterval(() => {
+        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        const timerElement = document.querySelector('.timer');
+        timerElement.textContent = formatTime(elapsedTime);
+    }, 1000);
+}
+
+// Stop de timer
+function stopTimer() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+}
+
+// Reset de timer
+function resetTimer() {
+    stopTimer();
+    const timerElement = document.querySelector('.timer');
+    timerElement.textContent = '00:00';
+}
 
 // Functie om afbeeldingen te laden
 async function initializeImages(source, pairCount) {
@@ -58,6 +85,8 @@ function getCardColors() {
 
 // Klikhandler voor een kaart
 function handleCardClick(card) {
+    startTimer(); // Timer starten bij eerste klik
+    
     const cardImage = card.querySelector('img');
 
     // Controleer of de kaart al geopend is
@@ -114,6 +143,7 @@ function updateFoundPairsDisplay() {
 
 // Eindig het spel
 function endGame() {
+    stopTimer(); // Stop de timer
     alert(`Gefeliciteerd! Je hebt het spel voltooid met ${foundPairs} paren.`);
     resetGame();
 }
@@ -122,6 +152,7 @@ function endGame() {
 function resetGame() {
     foundPairs = 0;
     openedCards = [];
+    resetTimer(); // Reset de timer
     updateFoundPairsDisplay();
     buildBoard();
 }

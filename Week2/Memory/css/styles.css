@@ -79,9 +79,9 @@
 
 .grid-container {
     display: grid;
-    max-width: 600px;
-    grid-template-rows: repeat(6, 10vh);/* Vaste hoogte voor rijen */
-    grid-template-columns: repeat(6, 10vh); /* Twee kolommen met gelijke breedte */
+    max-width: 500px;
+    grid-template-rows: repeat(6, 13vh);/* Vaste hoogte voor rijen */
+    grid-template-columns: repeat(6, 13vh); /* Twee kolommen met gelijke breedte */
     /* grid-row-gap: 2vh;
     grid-column-gap: 2vh; */
 }
