@@ -53,3 +53,39 @@ function handleCardClick(event) {
     }
 }
 
+function compareCards() {
+    const [card1, card2] = openedCards;
+    const img1 = card1.querySelector('img').src;
+    const img2 = card2.querySelector('img').src;
+
+    if (img1 === img2) {
+        // Match gevonden
+        card1.classList.add('gevonden');
+        card2.classList.add('gevonden');
+        foundPairs++;
+        updateFoundPairsDisplay();
+    } else {
+        // Geen match, draai kaarten terug
+        card1.querySelector('img').style.display = 'none';
+        card2.querySelector('img').style.display = 'none';
+    }
+
+    openedCards = [];
+
+    // Controleer of het spel klaar is
+    if (foundPairs === images.length / 2) {
+        endGame();
+    }
+}
+
+document.getElementById('imageSource').addEventListener('change', async (event) => {
+    const source = event.target.value;
+    const pairCount = boardSize / 2;
+
+    // Laad nieuwe afbeeldingen en reset het spel
+    await initializeImages(source, pairCount);
+    buildBoard();
+    resetGame();
+});
+
+
