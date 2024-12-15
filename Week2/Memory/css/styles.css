@@ -77,42 +77,36 @@
     transform: translate(-50%);
 }
 
-/* .toontijd {
-    background-color: var(--buttongreen);
-    width: 200px; 
-    height: 20px;
-    border: 2px solid var(--bordergray);
-} */
-
-/* @keyframes timer {
-    from { width: 0; }
-    to { width: 100%; }
-} */
-  
-/* .timer {
-    max-width: 200px;
-    height: 16px;
-    border:none;
-    background-color: var(--timerblue);
-    animation: timer 60s linear infinite;
-} */
-
-
 .grid-container {
     display: grid;
     max-width: 600px;
-    grid-template-columns: auto auto auto auto auto auto;
+    grid-template-rows: 10vh 10vh 10vh 10vh 10vh 10vh; /* Vaste hoogte voor rijen */
+    grid-template-columns: 10vh 10vh 10vh 10vh 10vh 10vh; /* Twee kolommen met gelijke breedte */
+    grid-row-gap: 2vh;
+    grid-column-gap: 2vh;
 }
 
+/* Zorg dat de grid-items een vierkante vorm hebben */
 .grid-item {
-    border: 3px solid var(--white);
     font-size: 15px;
     font-weight: bold;
     color:var(--white);
     display: flex;
     justify-content: center;
     align-items: center;
-    aspect-ratio: 1;
+    aspect-ratio: 1; /* Maakt ze vierkant */
+    overflow: hidden; /* Zorgt ervoor dat de afbeelding niet groter is dan het vak */
+    border-radius: 8px; /* Optioneel: voor afgeronde hoeken */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Zorg dat afbeeldingen passen binnen de grid-item */
+.grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Maakt de afbeelding volledig zichtbaar en passend binnen de container */
+    display: none; /* Begin met afbeeldingen verborgen */
+    border-radius: 8px; /* Optioneel: laat de afbeelding dezelfde hoeken volgen als de kaart */
 }
 
 .kleurselectie {
@@ -171,4 +165,6 @@ table {
     text-decoration: none;
     cursor: pointer;
 }
+
+
 
