@@ -167,7 +167,10 @@ imageSourceSelector.addEventListener('change', async (event) => {
 });
 
 // Eventlistener voor het starten van een nieuw spel
-startButton.addEventListener('click', resetGame);
+startButton.addEventListener('click', () => {
+    resetGame(); // Reset het spel
+    startTimer(); // Start de timer
+});
 
 // Eventlistener voor kleuraanpassingen
 [kaartkleurInput, openKleurInput, gevondenKleurInput].forEach(input => {
