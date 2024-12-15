@@ -90,7 +90,12 @@ function handleCardClick(card) {
     const cardImage = card.querySelector('img');
 
     // Controleer of de kaart al geopend is
-    if (card.classList.contains('open') || card.classList.contains('found') || openedCards.length === 2) return;
+    if (card.classList.contains('open') || card.classList.contains('found')) return;
+
+    // Als er al twee kaarten geopend zijn, draai ze terug, tenzij ze een paar vormen
+    if (openedCards.length === 2) {
+        closeOpenedCards(); // Draai de twee eerder geopende kaarten terug
+    }
 
     // Toon de afbeelding en voeg de kaart toe aan geopende kaarten
     cardImage.style.display = 'block';
@@ -100,8 +105,44 @@ function handleCardClick(card) {
 
     // Controleer of er twee kaarten zijn geopend
     if (openedCards.length === 2) {
-        setTimeout(compareCards, 500);
+        checkForMatch();
+        
+        // Controleer of het spel voorbij is
+        if (foundPairs === images.length / 2) {
+            endGame();
+        }
     }
+}
+
+function closeOpenedCards() {
+    openedCards.forEach(card => {
+        if (!card.classList.contains('found')) {
+            const cardImage = card.querySelector('img');
+            cardImage.style.display = 'none'; // Verberg de afbeelding
+            card.classList.remove('open');
+            setCardColor(card, 'closed', getCardColors()); // Reset kleur naar gesloten
+        }
+    });
+    openedCards = []; // Reset de geopende kaarten
+}
+
+function checkForMatch() {
+    const [card1, card2] = openedCards;
+    const img1 = card1.querySelector('img').src;
+    const img2 = card2.querySelector('img').src;
+
+    if (img1 === img2) {
+        // Markeer als gevonden
+        card1.classList.add('found');
+        card2.classList.add('found');
+        setCardColor(card1, 'found', getCardColors());
+        setCardColor(card2, 'found', getCardColors());
+        foundPairs++;
+        updateFoundPairsDisplay();
+        openedCards = []; // Reset geopende kaarten
+    }
+
+    
 }
 
 // Vergelijk de geopende kaarten
@@ -143,9 +184,23 @@ function updateFoundPairsDisplay() {
 
 // Eindig het spel
 function endGame() {
-    stopTimer(); // Stop de timer
-    alert(`Gefeliciteerd! Je hebt het spel voltooid met ${foundPairs} paren.`);
-    resetGame();
+    clearInterval(timerInterval);
+
+    // Haal de tijd op
+    const timeTaken = Math.floor((Date.now() - startTime) / 1000);
+    
+    // Toon het tijdstip in het modale venster
+    document.getElementById('final-time').textContent = timeTaken;
+
+    // Zet het modaal venster in de "zichtbaar" status
+    const modal = document.getElementById('winModal');
+    modal.style.display = 'block'; // Maak het modaal zichtbaar
+}
+
+// Functie om het modale venster te sluiten wanneer de gebruiker op de sluitknop klikt
+function closeModal() {
+    const modal = document.getElementById('winModal');
+    modal.style.display = 'none'; // Verberg het modaal
 }
 
 // Reset het spel
@@ -182,6 +237,17 @@ startButton.addEventListener('click', () => {
             }
         });
     });
+});
+
+// Voeg een event listener toe voor de sluitknop
+document.querySelector('.close-btn').addEventListener('click', closeModal);
+
+// Voeg een event listener toe om het modaal te sluiten als de gebruiker ergens buiten het modaal klikt
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('winModal');
+    if (event.target === modal) {
+        closeModal();
+    }
 });
 
 // Initialisatie van het spel
