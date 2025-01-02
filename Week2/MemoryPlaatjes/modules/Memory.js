@@ -11,6 +11,13 @@ const foundPairsDisplay = getElement('#foundPairsDisplay');
 const startButton = getElement('.start-button');
 const boardSizeSelector = getElement('#boardSize');
 const boardSizeMessage = getElement('#boardSizeMessage');
+const defaultHighscores = [
+    { name: "Barack Obama", time: 200 },
+    { name: "Bernie Sanders", time: 300 },
+    { name: "Hillary Clinton", time: 400 },
+    { name: "Donald Trump", time: 500 },
+    { name: "Jeb Bush", time: 600 },
+];
 
 let timeBarInterval = null; // Interval voor de tijdsbalk
 const timeBarElement = getElement('.time-bar'); // De tijdsbalk
@@ -163,19 +170,59 @@ function updateFoundPairsDisplay() {
     foundPairsDisplay.textContent = foundPairs;
 }
 
+// speeltijd van gebruiker saven
+function savePlaytime(time) {
+    const playtimes = JSON.parse(localStorage.getItem('playtimes')) || [];
+    playtimes.push(time);
+    localStorage.setItem('playtimes', JSON.stringify(playtimes));
+}
+
+// gemiddelde speeltijd van gebruiker berekenen
+function calculateAverageTime() {
+    const playtimes = JSON.parse(localStorage.getItem('playtimes')) || [];
+    if (playtimes.length === 0) return 0;
+
+    const total = playtimes.reduce((sum, time) => sum + time, 0);
+    return Math.floor(total / playtimes.length);
+}
+
+// UI gemiddelde speeltijd gebruiker weergeven
+function updateAverageTimeUI() {
+    const averageTime = calculateAverageTime();
+    const averageTimeElement = document.getElementById('averageTime');
+    averageTimeElement.textContent = `${averageTime}s`;
+}
+
 // Eindig het spel
 function endGame() {
     clearInterval(timerInterval);
 
-    // Haal de tijd op
+    // Bereken de speeltijd
     const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-    
-    // Toon het tijdstip in het modale venster
     document.getElementById('final-time').textContent = timeTaken;
 
-    // Zet het modaal venster in de "zichtbaar" status
+    // Highscores bijwerken
+    const playerName = prompt("Gefeliciteerd! Vul je naam in voor de highscores:", "Naam");
+    const highscores = loadHighscores();
+
+    // Voeg de nieuwe score toe en sorteer
+    highscores.push({ name: playerName || "Onbekend", time: timeTaken });
+    highscores.sort((a, b) => a.time - b.time); // Sorteer op tijd (asc)
+    if (highscores.length > 5) highscores.pop(); // Beperk tot top 5
+
+    // Sla bijwerkte highscores op
+    saveHighscores(highscores);
+
+    // Update de UI
+    updateHighscoreUI();
+
+    // Opslaan en bijwerken van gemiddelde speeltijd
+    savePlaytime(timeTaken);
+    updateAverageTimeUI();
+
+    // Toon het modale venster
     const modal = document.getElementById('winModal');
-    modal.style.display = 'block'; // Maak het modaal zichtbaar
+    modal.style.display = 'block';
 }
 
 // Functie om het modale venster te sluiten wanneer de gebruiker op de sluitknop klikt
@@ -219,6 +266,26 @@ function resetGame() {
 
     // Verberg de bordgrootte-melding
     boardSizeMessage.style.display = 'none';
+}
+
+// Laad highscores uit localStorage of stel standaard in
+function loadHighscores() {
+    const storedHighscores = JSON.parse(localStorage.getItem('highscores'));
+    return storedHighscores || defaultHighscores;
+}
+
+// Sla highscores op in localStorage
+function saveHighscores(highscores) {
+    localStorage.setItem('highscores', JSON.stringify(highscores));
+}
+
+function updateHighscoreUI() {
+    const highscoreList = document.querySelector('aside ol'); // Verwijzing naar de lijst in de HTML
+    const highscores = loadHighscores();
+
+    highscoreList.innerHTML = highscores
+        .map(score => `<li>${score.name}: ${score.time}s</li>`)
+        .join('');
 }
 
 // Eventlistener voor het starten van een nieuw spel
@@ -317,6 +384,8 @@ async function updateImages(newSource) {
 
 // Initialisatie van het spel
 (async function init() {
+    updateHighscoreUI();
+    updateAverageTimeUI();
     const pairCount = boardSize / 2;
     await initializeImages('picsum', pairCount); // Standaard bron is Picsum
     resetGame();
