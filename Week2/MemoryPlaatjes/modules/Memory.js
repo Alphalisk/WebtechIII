@@ -14,7 +14,7 @@ const boardSizeMessage = getElement('#boardSizeMessage');
 
 let timeBarInterval = null; // Interval voor de tijdsbalk
 const timeBarElement = getElement('.time-bar'); // De tijdsbalk
-const maxShowTime = 10000; // Maximale toontijd in milliseconden (3 seconden)
+const maxShowTime = 3000; // Maximale toontijd in milliseconden (3 seconden)
 let timerInterval = null;
 let startTime = null;
 let boardSize = 36; // Standaard 6x6
@@ -158,38 +158,6 @@ function checkForMatch() {
     }
 }
 
-// Vergelijk de geopende kaarten
-function compareCards() {
-    const [card1, card2] = openedCards;
-    const img1 = card1.querySelector('img').src;
-    const img2 = card2.querySelector('img').src;
-
-    if (img1 === img2) {
-        // Markeer als gevonden
-        card1.classList.add('found');
-        card2.classList.add('found');
-        setCardColor(card1, 'found', getCardColors());
-        setCardColor(card2, 'found', getCardColors());
-        foundPairs++;
-        updateFoundPairsDisplay();
-    } else {
-        // Draai kaarten terug
-        card1.classList.remove('open');
-        card2.classList.remove('open');
-        card1.querySelector('img').style.display = 'none';
-        card2.querySelector('img').style.display = 'none';
-        setCardColor(card1, 'closed', getCardColors());
-        setCardColor(card2, 'closed', getCardColors());
-    }
-
-    openedCards = [];
-
-    // Controleer of het spel voorbij is
-    if (foundPairs === images.length / 2) {
-        endGame();
-    }
-}
-
 // Update de gevonden paren in de UI
 function updateFoundPairsDisplay() {
     foundPairsDisplay.textContent = foundPairs;
@@ -253,15 +221,6 @@ function resetGame() {
     boardSizeMessage.style.display = 'none';
 }
 
-// // Eventlistener voor afbeeldingstype
-// imageSourceSelector.addEventListener('change', async (event) => {
-//     const source = event.target.value;
-//     const pairCount = boardSize / 2;
-
-//     await initializeImages(source, pairCount);
-//     resetGame();
-// });
-
 // Eventlistener voor het starten van een nieuw spel
 startButton.addEventListener('click', () => {
     resetGame(); // Reset het spel
@@ -297,11 +256,13 @@ window.addEventListener('click', function(event) {
     }
 });
 
+// Een Eventlistener voor een API-update met nieuwe afbeeldingen.
 imageSourceSelector.addEventListener('change', async (event) => {
     const newSource = event.target.value;
     await updateImages(newSource); // Werk de afbeeldingen bij
 });
 
+// Hiermee wordt het bord geupdate met nieuwe afbeeldingen bij een wijziging van API.
 async function updateImages(newSource) {
     try {
         const pairCount = boardSize / 2; // Het aantal unieke paren
