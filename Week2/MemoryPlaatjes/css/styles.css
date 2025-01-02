@@ -64,7 +64,7 @@
     }
 
     .whitespace-sm {
-        padding: 30px;
+        padding: 20px;
     }
 }
 
@@ -190,7 +190,6 @@ table {
 /* Wijzigen van bordgrootte */
 .board-size-selector {
     margin: 20px 0;
-    text-align: center;
 }
 
 #boardSizeMessage {
