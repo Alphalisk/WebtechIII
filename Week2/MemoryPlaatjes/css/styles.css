@@ -187,3 +187,15 @@ table {
     transition: width 0.1s linear; 
 }
 
+/* Wijzigen van bordgrootte */
+.board-size-selector {
+    margin: 20px 0;
+    text-align: center;
+}
+
+#boardSizeMessage {
+    font-size: 0.9em;
+    color: gray;
+    margin-top: 10px;
+}
+

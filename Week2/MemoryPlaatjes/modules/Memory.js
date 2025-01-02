@@ -9,6 +9,8 @@ const gevondenKleurInput = getElement('#gevonden');
 const imageSourceSelector = getElement('#imageSource');
 const foundPairsDisplay = getElement('#foundPairsDisplay');
 const startButton = getElement('.start-button');
+const boardSizeSelector = getElement('#boardSize');
+const boardSizeMessage = getElement('#boardSizeMessage');
 
 let timeBarInterval = null; // Interval voor de tijdsbalk
 const timeBarElement = getElement('.time-bar'); // De tijdsbalk
@@ -58,6 +60,11 @@ async function initializeImages(source, pairCount) {
 // Functie om het bord te bouwen
 function buildBoard() {
     grid.innerHTML = ''; // Leeg het bord
+
+    // Bereken het aantal rijen en kolommen op basis van de bordgrootte
+    const dimension = Math.sqrt(boardSize);
+    grid.style.gridTemplateRows = `repeat(${dimension}, 1fr)`;
+    grid.style.gridTemplateColumns = `repeat(${dimension}, 1fr)`;
 
     images.forEach((image, index) => {
         const card = document.createElement('div');
@@ -235,7 +242,17 @@ function resetGame() {
     openedCards = [];
     resetTimer(); // Reset de timer
     updateFoundPairsDisplay();
-    buildBoard();
+    clearInterval(timeBarInterval); // Stop de tijdsbalk
+    timeBarElement.style.width = '0%'; // Reset de balk
+
+    // Update de grootte van het bord
+    const pairCount = boardSize / 2; // Helften voor paren
+    initializeImages(imageSourceSelector.value, pairCount).then(() => {
+        buildBoard(); // Bouw het bord opnieuw
+    });
+
+    // Verberg de bordgrootte-melding
+    boardSizeMessage.style.display = 'none';
 }
 
 // Eventlistener voor afbeeldingstype
@@ -263,6 +280,12 @@ startButton.addEventListener('click', () => {
             }
         });
     });
+});
+
+// Eventlistener voor bordgrootte aanpassingen
+boardSizeSelector.addEventListener('change', (event) => {
+    boardSize = parseInt(event.target.value, 10); // Sla de nieuwe bordgrootte op
+    boardSizeMessage.style.display = 'block'; // Toon de melding
 });
 
 // Voeg een event listener toe voor de sluitknop
