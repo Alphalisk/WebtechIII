@@ -156,8 +156,6 @@ function checkForMatch() {
         updateFoundPairsDisplay();
         openedCards = []; // Reset geopende kaarten
     }
-
-    
 }
 
 // Vergelijk de geopende kaarten
@@ -255,14 +253,14 @@ function resetGame() {
     boardSizeMessage.style.display = 'none';
 }
 
-// Eventlistener voor afbeeldingstype
-imageSourceSelector.addEventListener('change', async (event) => {
-    const source = event.target.value;
-    const pairCount = boardSize / 2;
+// // Eventlistener voor afbeeldingstype
+// imageSourceSelector.addEventListener('change', async (event) => {
+//     const source = event.target.value;
+//     const pairCount = boardSize / 2;
 
-    await initializeImages(source, pairCount);
-    resetGame();
-});
+//     await initializeImages(source, pairCount);
+//     resetGame();
+// });
 
 // Eventlistener voor het starten van een nieuw spel
 startButton.addEventListener('click', () => {
@@ -298,6 +296,63 @@ window.addEventListener('click', function(event) {
         closeModal();
     }
 });
+
+imageSourceSelector.addEventListener('change', async (event) => {
+    const newSource = event.target.value;
+    await updateImages(newSource); // Werk de afbeeldingen bij
+});
+
+async function updateImages(newSource) {
+    try {
+        const pairCount = boardSize / 2; // Het aantal unieke paren
+        const fetchedImages = await fetchImages(newSource, pairCount); // Nieuwe afbeeldingen ophalen
+
+        // Maak een array van unieke afbeeldingen (één per paar)
+        const uniqueImages = shuffleArray([...fetchedImages]);
+
+        // Map voor kaartparen naar nieuwe afbeeldingen
+        const pairMapping = {};
+        let assignedPairs = 0;
+
+        // Bepaal welke kaarten een paar vormen
+        images.forEach((_, index) => {
+            if (!pairMapping.hasOwnProperty(index)) {
+                // Zoek het bijbehorende paar
+                for (let j = index + 1; j < images.length; j++) {
+                    if (!pairMapping.hasOwnProperty(j) && images[index] === images[j]) {
+                        // Wijs beide kaarten dezelfde unieke afbeelding toe
+                        pairMapping[index] = uniqueImages[assignedPairs];
+                        pairMapping[j] = uniqueImages[assignedPairs];
+                        assignedPairs++;
+                        break;
+                    }
+                }
+            }
+        });
+
+        // Update de afbeeldingen op het bord
+        images.forEach((_, index) => {
+            const card = grid.querySelector(`[data-index="${index}"]`);
+            const cardImage = card.querySelector('img');
+
+            // Update de afbeelding met de nieuwe afbeelding uit de mapping
+            cardImage.src = pairMapping[index];
+
+            // Toon of verberg de afbeelding afhankelijk van de status van de kaart
+            if (card.classList.contains('open') || card.classList.contains('found')) {
+                cardImage.style.display = 'block';
+            } else {
+                cardImage.style.display = 'none';
+            }
+        });
+
+        // Werk de globale afbeeldingen bij
+        images = [...grid.querySelectorAll('.grid-item img')].map(img => img.src);
+    } catch (error) {
+        console.error('Fout bij het updaten van afbeeldingen:', error);
+    }
+}
+
 
 // Initialisatie van het spel
 (async function init() {
