@@ -165,5 +165,24 @@ table {
     cursor: pointer;
 }
 
+.time-bar-container {
+    position: relative;
+    width: 80%;
+    height: 20px;
+    margin: 20px auto;
+    background-color: var(--bordergray);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid var(--borderblack);
+}
 
+.time-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%; /* Start op 0% */
+    background-color: var(--timerblue);
+    transition: width 0.1s linear; /* Soepele overgang */
+}
 

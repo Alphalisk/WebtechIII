@@ -10,6 +10,9 @@ const imageSourceSelector = getElement('#imageSource');
 const foundPairsDisplay = getElement('#foundPairsDisplay');
 const startButton = getElement('.start-button');
 
+let timeBarInterval = null; // Interval voor de tijdsbalk
+const timeBarElement = getElement('.time-bar'); // De tijdsbalk
+const maxShowTime = 10000; // Maximale toontijd in milliseconden (3 seconden)
 let timerInterval = null;
 let startTime = null;
 let boardSize = 36; // Standaard 6x6
@@ -105,6 +108,7 @@ function handleCardClick(card) {
 
     // Controleer of er twee kaarten zijn geopend
     if (openedCards.length === 2) {
+        startTimeBar(); // Start de tijdsbalk na het openen van twee kaarten
         checkForMatch();
         
         // Controleer of het spel voorbij is
@@ -115,6 +119,8 @@ function handleCardClick(card) {
 }
 
 function closeOpenedCards() {
+    clearInterval(timeBarInterval); // Stop de tijdsbalk
+    timeBarElement.style.width = '0%'; // Reset de balk
     openedCards.forEach(card => {
         if (!card.classList.contains('found')) {
             const cardImage = card.querySelector('img');
@@ -133,6 +139,8 @@ function checkForMatch() {
 
     if (img1 === img2) {
         // Markeer als gevonden
+        clearInterval(timeBarInterval); // Stop de tijdsbalk
+        timeBarElement.style.width = '0%'; // Reset de balk
         card1.classList.add('found');
         card2.classList.add('found');
         setCardColor(card1, 'found', getCardColors());
@@ -201,6 +209,24 @@ function endGame() {
 function closeModal() {
     const modal = document.getElementById('winModal');
     modal.style.display = 'none'; // Verberg het modaal
+}
+
+// Resterende Tijdbar
+function startTimeBar() {
+    clearInterval(timeBarInterval); // Stop vorige interval als die bestaat
+    timeBarElement.style.width = '0%'; // Reset de balk
+
+    let elapsedTime = 0;
+    timeBarInterval = setInterval(() => {
+        elapsedTime += 100; // Tel 100ms op
+        const percentage = (elapsedTime / maxShowTime) * 100;
+        timeBarElement.style.width = `${percentage}%`;
+
+        if (elapsedTime >= maxShowTime) {
+            clearInterval(timeBarInterval);
+            closeOpenedCards(); // Draai kaarten om na maximale tijd
+        }
+    }, 100); // Update elke 100ms
 }
 
 // Reset het spel
