@@ -165,6 +165,7 @@ table {
     cursor: pointer;
 }
 
+/* Visuals van de resterende tijd timer */
 .time-bar-container {
     position: relative;
     width: 80%;
@@ -181,8 +182,8 @@ table {
     top: 0;
     left: 0;
     height: 100%;
-    width: 0%; /* Start op 0% */
+    width: 0%; 
     background-color: var(--timerblue);
-    transition: width 0.1s linear; /* Soepele overgang */
+    transition: width 0.1s linear; 
 }
 
