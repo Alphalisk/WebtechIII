@@ -1,0 +1,105 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Memory Game</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="css/styles.css">
+
+        <!-- Mobile first, proper rendering and touch controls -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    </head>
+    <body>
+        <main>
+            <div class="col-8">
+                <h1 class="center">Javascript Memory</h1>
+                <p class="center">
+                    Verlopen tijd: <span class="timer">0 seconden</span><br>
+                    Gevonden kaartparen: <span id="foundPairsDisplay">0</span><br>
+                    Resterende toontijd: <br>
+                    <button class="time-bar-container">
+                        <span class="time-bar"></span>
+                    </button>
+                </p>
+            </div>
+            <article class="col-8">
+                <br>
+                <div class="grid-container"></div>
+            </article>
+
+            <aside class="col-4 sidebar">
+                <p><b>Top vijf</b></p>
+
+                <ol>
+                    <li>Barack Obama:200</li>
+                    <li>Bernie Sanders:300</li>
+                    <li>Hillary Clinton:400</li>
+                    <li>Donald Trump:500</li>
+                    <li>Jeb Bush:600</li>
+                </ol>
+
+                <p><b>Gemiddelde speeltijd: </b><span id="averageTime">0s</span></p>
+
+                <div class="api-selector">
+                    <label for="imageSource">Memory plaatjes:</label>
+                    <select id="imageSource">
+                        <option value="picsum">Foto's</option>
+                        <option value="dog">Honden</option>
+                        <option value="cat">Katten</option>
+                        <option value="fox">Vossen</option>
+                    </select>
+                </div>
+                <div class="board-size-selector">
+                    <label for="boardSize">Kies de bordgrootte:</label>
+                    <select id="boardSize">
+                        <option value="16">4x4</option>
+                        <option value="36" selected>6x6</option>
+                        <option value="64">8x8</option>
+                    </select>
+                </div>
+                <p id="boardSizeMessage" class="center" style="display: none;">
+                    De nieuwe bordgrootte wordt toegepast zodra je een nieuw spel start.
+                </p>
+                <br>
+
+                <table>
+                    <tr>
+                        <td><b>Kaartkleuren</b></td>
+                    </tr>
+                    <tr>
+                        <td>Achtergrond</td>
+                        <td><input class="kleurweergave" type="color" id="kaartkleur" name="favcolor" value="#1deb76"></td>
+                    </tr>
+                    <tr>
+                        <td>Open kaarten</td>
+                        <td><input class="kleurweergave" type="color" id="open" name="favcolor" value="#0d793c"></td>
+                        
+                    </tr>
+                    <tr>
+                        <td>Gevonden paar</td>
+                        <td><input class="kleurweergave" type="color" id="gevonden" name="favcolor" value="#c026a9"></td>
+                    </tr>
+                </table>
+
+                <div class="whitespace-sm"></div>
+
+                <td><button class="kleurselectie start-button">Nieuw Spel</button></td>
+
+            </aside>
+            <!-- Modaal voor het spel winnen -->
+            <div id="winModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <h2>Gefeliciteerd!</h2>
+                    <p>Je hebt het spel in <span id="final-time"></span> seconden voltooid.</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Link naar de JavaScript file -->
+        <script type="module" src="modules/Memory.js"></script>
+        <script type="module" src="modules/backend.js"></script>
+    </body>
+</html>

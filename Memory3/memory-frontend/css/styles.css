@@ -1,0 +1,200 @@
+:root {
+    --buttongreen: #1deb76;
+    --buttondarkgreen: #0d793c;
+    --buttonpurple: #c026a9;
+    --bordergray: rgb(207, 207, 207);
+    --memoryboxgreen: #84ffb9;
+    --borderblack: rgb(63, 63, 63);
+    --timerblue:rgb(79, 167, 255);
+    --white: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+  }
+  
+  main::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  [class*="col-"] {
+    float: left;
+    padding: 15px;
+  }
+  
+  html {
+    font-family: "Lucida Sans", sans-serif;
+  }
+  
+/* For mobile phones: */
+[class*="col-"] {
+    width: 100%;
+}
+.whitespace {
+    padding: 20px;
+}
+
+.whitespace-sm {
+    padding: 10px;
+}
+  
+/* For desktop: */
+@media only screen and (min-width: 768px) {
+    .col-1 {width: 8.33%;}
+    .col-2 {width: 16.66%;}
+    .col-3 {width: 25%;}
+    .col-4 {width: 33.33%;}
+    .col-5 {width: 41.66%;}
+    .col-6 {width: 50%;}
+    .col-7 {width: 58.33%;}
+    .col-8 {width: 66.66%;}
+    .col-9 {width: 75%;}
+    .col-10 {width: 83.33%;}
+    .col-11 {width: 91.66%;}
+    .col-12 {width: 100%;}
+
+    .sidebar {
+        padding-top: 150px;
+    }
+
+    .whitespace {
+        padding: 60px;
+    }
+
+    .whitespace-sm {
+        padding: 20px;
+    }
+}
+
+.center {
+    text-align: center;
+    margin: 0;
+    position: relative;
+    left: 45%;
+    -ms-transform: translate(-50%);
+    transform: translate(-50%);
+}
+
+.grid-container {
+    display: grid;
+    max-width: 42rem;
+    grid-template-rows: repeat(6, 1fr);/* Vaste hoogte voor rijen */
+    grid-template-columns: repeat(6, 1fr); /* Twee kolommen met gelijke breedte */
+}
+
+/* Zorg dat de grid-items een vierkante vorm hebben */
+.grid-item {
+    border: 3px solid var(--white);
+    font-size: 15px;
+    font-weight: bold;
+    color:var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    aspect-ratio: 1; /* Maakt ze vierkant */
+    overflow: hidden; /* Zorgt ervoor dat de afbeelding niet groter is dan het vak */
+    border-radius: 8px; /* Optioneel: voor afgeronde hoeken */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Zorg dat afbeeldingen passen binnen de grid-item */
+.grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Maakt de afbeelding volledig zichtbaar en passend binnen de container */
+    display: none; /* Begin met afbeeldingen verborgen */
+    border-radius: 8px; /* Optioneel: laat de afbeelding dezelfde hoeken volgen als de kaart */
+}
+
+.kleurselectie {
+    background: linear-gradient(to bottom,var(--white), var(--bordergray));
+    border: 1px var(--borderblack) solid;
+    width: 110px;
+    height: 20px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.kleurweergave {
+    border: 1px solid var(--bordergray);
+    width: 110px; 
+    height: 20px;
+    padding:0;
+}
+
+table {
+    border-spacing: 1px;
+}
+
+/* Modaal: standaard verborgen */
+.modal {
+    display: none; /* Start verborgen */
+    position: fixed; /* Blijft op de plek */
+    z-index: 1; /* Zorgt dat het boven andere elementen komt */
+    left: 0;
+    top: 0;
+    width: 100%; /* Volledig scherm */
+    height: 100%; /* Volledig scherm */
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparante achtergrond */
+}
+
+/* Modale content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Je kunt de breedte aanpassen */
+    text-align: center;
+}
+
+/* Sluitknop in de rechterbovenhoek */
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Visuals van de resterende tijd timer */
+.time-bar-container {
+    position: relative;
+    width: 80%;
+    height: 20px;
+    margin: 20px auto;
+    background-color: var(--bordergray);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid var(--borderblack);
+}
+
+.time-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%; 
+    background-color: var(--timerblue);
+    transition: width 0.1s linear; 
+}
+
+/* Wijzigen van bordgrootte */
+.board-size-selector {
+    margin: 20px 0;
+}
+
+#boardSizeMessage {
+    font-size: 0.9em;
+    color: gray;
+    margin-top: 10px;
+}
+
