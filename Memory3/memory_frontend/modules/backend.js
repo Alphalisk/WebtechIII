@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (scoresResponse.ok) {
             const scores = await scoresResponse.json();
-            updateTopFive(scores);
+            const lowestScores = getLowestScores(scores);
+            updateTopFive(lowestScores);
         } else {
             console.error('Kon de top 5 scores niet ophalen.');
         }
@@ -18,6 +19,20 @@ document.addEventListener('DOMContentLoaded', async function () {
         console.error('Fout:', error.message);
     }
 });
+
+function getLowestScores(scores) {
+    const playerScores = {};
+
+    // Groepeer scores per speler en bewaar alleen de laagste score per speler
+    scores.forEach(score => {
+        if (!playerScores[score.username] || score.score < playerScores[score.username].score) {
+            playerScores[score.username] = score;
+        }
+    });
+
+    // Converteer naar een array van unieke scores
+    return Object.values(playerScores);
+}
 
 function displayMessage(message, type) {
     const messageBar = document.createElement('div');
@@ -60,7 +75,7 @@ function updateTopFive(scores) {
     highscoreList.innerHTML = ''; // Wis de huidige lijst
 
     scores
-        .sort((a, b) => b.score - a.score) // Sorteer op score, aflopend
+        .sort((a, b) => a.score - b.score) // Sorteer op score, oplopend
         .slice(0, 5) // Pak de top 5
         .forEach(score => {
             const listItem = document.createElement('li');

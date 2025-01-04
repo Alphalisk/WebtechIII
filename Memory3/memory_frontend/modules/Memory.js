@@ -203,18 +203,20 @@ function endGame() {
 
     // Highscores bijwerken
     const playerName = prompt("Gefeliciteerd! Vul je naam in voor de highscores:", "Naam");
-    const highscores = loadHighscores();
 
-    // Voeg de nieuwe score toe en sorteer
-    highscores.push({ name: playerName || "Onbekend", time: timeTaken });
-    highscores.sort((a, b) => a.time - b.time); // Sorteer op tijd (asc)
-    if (highscores.length > 5) highscores.pop(); // Beperk tot top 5
+    // ******** oude highscores ************
+    // const highscores = loadHighscores();
 
-    // Sla bijwerkte highscores op
-    saveHighscores(highscores);
+    // // Voeg de nieuwe score toe en sorteer
+    // highscores.push({ name: playerName || "Onbekend", time: timeTaken });
+    // highscores.sort((a, b) => a.time - b.time); // Sorteer op tijd (asc)
+    // if (highscores.length > 5) highscores.pop(); // Beperk tot top 5
 
-    // Update de UI
-    updateHighscoreUI();
+    // // Sla bijwerkte highscores op
+    // saveHighscores(highscores);
+
+    // // Update de UI
+    // updateHighscoreUI();
 
     // Opslaan en bijwerken van gemiddelde speeltijd
     savePlaytime(timeTaken);
@@ -268,25 +270,26 @@ function resetGame() {
     boardSizeMessage.style.display = 'none';
 }
 
-// Laad highscores uit localStorage of stel standaard in
-function loadHighscores() {
-    const storedHighscores = JSON.parse(localStorage.getItem('highscores'));
-    return storedHighscores || defaultHighscores;
-}
+// ******* Oude manier van scores ****************8
+// // Laad highscores uit localStorage of stel standaard in
+// function loadHighscores() {
+//     const storedHighscores = JSON.parse(localStorage.getItem('highscores'));
+//     return storedHighscores || defaultHighscores;
+// }
 
-// Sla highscores op in localStorage
-function saveHighscores(highscores) {
-    localStorage.setItem('highscores', JSON.stringify(highscores));
-}
+// // Sla highscores op in localStorage
+// function saveHighscores(highscores) {
+//     localStorage.setItem('highscores', JSON.stringify(highscores));
+// }
 
-function updateHighscoreUI() {
-    const highscoreList = document.querySelector('aside ol'); // Verwijzing naar de lijst in de HTML
-    const highscores = loadHighscores();
+// function updateHighscoreUI() {
+//     const highscoreList = document.querySelector('aside ol'); // Verwijzing naar de lijst in de HTML
+//     const highscores = loadHighscores();
 
-    highscoreList.innerHTML = highscores
-        .map(score => `<li>${score.name}: ${score.time}s</li>`)
-        .join('');
-}
+//     highscoreList.innerHTML = highscores
+//         .map(score => `<li>${score.name}: ${score.time}s</li>`)
+//         .join('');
+// }
 
 // Eventlistener voor het starten van een nieuw spel
 startButton.addEventListener('click', () => {
