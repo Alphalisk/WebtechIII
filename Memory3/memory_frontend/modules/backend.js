@@ -1,53 +1,18 @@
-document.getElementById('login-form').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Voorkomt standaard formulierverzending
-
-    // Haal formuliergegevens op
-    const form = event.target;
-    const username = form.querySelector('input[name="username"]').value;
-    const password = form.querySelector('input[name="password"]').value;
-
+document.addEventListener('DOMContentLoaded', async function () {
     try {
-        // Verstuur login verzoek naar de backend
-        const response = await fetch('http://localhost:8000/api/login_check', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-        });
-
-        if (!response.ok) {
-            if (response.status === 401) {
-                displayMessage('Ongeldige gebruikersnaam of wachtwoord.', 'error');
-            } else {
-                displayMessage('Er is een fout opgetreden bij het inloggen.', 'error');
-            }
-            throw new Error(`HTTP-fout: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        // Sla JWT op in localStorage
-        localStorage.setItem('jwt', data.token);
-
-        // Succesmelding
-        displayMessage('Succesvol ingelogd!', 'success');
-
-        // Optioneel: Haal spellen op voor de ingelogde speler
-        const playerId = 1; // Vervang dit met een daadwerkelijke speler-ID
-        const gamesResponse = await fetch(`http://localhost:8000/api/player/${playerId}/games`, {
+        // Haal de top 5 scores op vanuit de backend
+        const scoresResponse = await fetch('http://localhost:8000/scores', {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${data.token}`,
                 'Accept': 'application/json',
             },
         });
 
-        if (gamesResponse.ok) {
-            const games = await gamesResponse.json();
-            displayGames(games);
+        if (scoresResponse.ok) {
+            const scores = await scoresResponse.json();
+            updateTopFive(scores);
         } else {
-            displayMessage('Kon spellen niet ophalen.', 'error');
+            console.error('Kon de top 5 scores niet ophalen.');
         }
     } catch (error) {
         console.error('Fout:', error.message);
@@ -88,4 +53,18 @@ function displayGames(games) {
         gameElement.textContent = `Spel ${index + 1}: Score - ${game.score}, Datum - ${new Date(game.date).toLocaleDateString('nl-NL')}`;
         gamesContainer.appendChild(gameElement);
     });
+}
+
+function updateTopFive(scores) {
+    const highscoreList = document.querySelector('aside ol'); // Verwijzing naar de lijst in de HTML
+    highscoreList.innerHTML = ''; // Wis de huidige lijst
+
+    scores
+        .sort((a, b) => b.score - a.score) // Sorteer op score, aflopend
+        .slice(0, 5) // Pak de top 5
+        .forEach(score => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${score.username}: ${score.score}`;
+            highscoreList.appendChild(listItem);
+        });
 }
