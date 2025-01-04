@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inloggen</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        form {
+            border: 3px solid #f1f1f1;
+            width: 90%;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        .container {
+            padding: 16px;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Inloggen</h1>
+    <form id="login-form">
+        <div class="container">
+            <label for="username"><b>Gebruikersnaam:</b></label>
+            <input type="text" id="username" name="username" placeholder="Voer je gebruikersnaam in" required>
+
+            <label for="password"><b>Wachtwoord:</b></label>
+            <input type="password" id="password" name="password" placeholder="Voer je wachtwoord in" required>
+
+            <button type="submit">Inloggen</button>
+        </div>
+    </form>
+
+    <div id="message" class="message" style="display: none;"></div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Voorkom standaard formulierverzending
+
+            // Haal formuliergegevens op
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Verstuur loginverzoek naar de backend
+                const response = await fetch('http://localhost:8000/api/login_check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                const messageElement = document.getElementById('message');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('jwt', data.token); // JWT opslaan in localStorage
+
+                    // Navigeren naar de hoofdpagina
+                    window.location.href = 'index.html?message=success';
+                } else {
+                    const errorData = await response.json();
+                    messageElement.textContent = errorData.message || 'Inloggen mislukt. Controleer je gegevens.';
+                    messageElement.className = 'message error';
+                }
+
+                messageElement.style.display = 'block';
+            } catch (error) {
+                console.error('Fout:', error.message);
+                const messageElement = document.getElementById('message');
+                messageElement.textContent = 'Er is een fout opgetreden bij het inloggen.';
+                messageElement.className = 'message error';
+                messageElement.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
