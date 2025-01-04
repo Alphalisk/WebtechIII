@@ -14,7 +14,7 @@
     <body>
         <div class="navbar">
             <div class="left">
-                <h1>Memory Game</h1>
+                <h1>Memory</h1>
             </div>
             <div class="right">
                 <a href="inlog.html">Inloggen</a>
@@ -26,7 +26,7 @@
 
         <main>
             <div class="col-8">
-                <h1 class="center">Javascript Memory</h1>
+                <h2 class="center">Spel Informatie</h2>
                 <p class="center">
                     Verlopen tijd: <span class="timer">0 seconden</span><br>
                     Gevonden kaartparen: <span id="foundPairsDisplay">0</span><br>
@@ -99,6 +99,7 @@
                 <div class="whitespace-sm"></div>
 
                 <td><button class="kleurselectie start-button">Nieuw Spel</button></td>
+                <td><button class="kleurselectie reset-button">Reset Spel</button></td>
             </aside>
             <!-- Modaal voor het spel winnen -->
             <div id="winModal" class="modal">
@@ -111,24 +112,7 @@
         </main>
 
         <!-- Link naar de JavaScript file -->
-        <script type="module" src="modules/Memory.js"></script>
         <script type="module" src="modules/backend.js"></script>
-
-        <script>
-            // Controleer of er een queryparameter is voor succes
-            const urlParams = new URLSearchParams(window.location.search);
-            const message = urlParams.get('message');
-
-            if (message === 'success') {
-                const successMessage = document.getElementById('success-message');
-                successMessage.textContent = 'Je bent succesvol ingelogd! Veel plezier met het spel.';
-                successMessage.style.display = 'block';
-
-                // Verberg de boodschap na 3 seconden
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 3000);
-            }
-        </script>
+        <script type="module" src="modules/Memory.js"></script>
     </body>
 </html>

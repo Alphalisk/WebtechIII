@@ -212,9 +212,14 @@ table {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
-    padding: 0px 20px;
+    background-color: #036642;
+    padding: 0px 20px; /* Verlaagde hoogte door kleinere padding */
     color: white;
+    position: static;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 .navbar a {

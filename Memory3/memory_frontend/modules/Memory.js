@@ -19,6 +19,10 @@ const defaultHighscores = [
     { name: "Jeb Bush", time: 600 },
 ];
 
+// Controleer of er een queryparameter is voor succes
+const urlParams = new URLSearchParams(window.location.search);
+const message = urlParams.get('message');
+
 let timeBarInterval = null; // Interval voor de tijdsbalk
 const timeBarElement = getElement('.time-bar'); // De tijdsbalk
 const maxShowTime = 3000; // Maximale toontijd in milliseconden (3 seconden)
@@ -318,6 +322,11 @@ boardSizeSelector.addEventListener('change', (event) => {
 // Voeg een event listener toe voor de sluitknop
 document.querySelector('.close-btn').addEventListener('click', closeModal);
 
+// Logica voor het resetten van het spel
+document.querySelector('.reset-button').addEventListener('click', () => {
+    resetGame(); // Reset het spel
+});
+
 // Voeg een event listener toe om het modaal te sluiten als de gebruiker ergens buiten het modaal klikt
 window.addEventListener('click', function(event) {
     const modal = document.getElementById('winModal');
@@ -383,6 +392,29 @@ async function updateImages(newSource) {
         console.error('Fout bij het updaten van afbeeldingen:', error);
     }
 }
+
+if (message === 'success') {
+    const successMessage = document.getElementById('success-message');
+    successMessage.textContent = 'Je bent succesvol ingelogd! Veel plezier met het spel.';
+    successMessage.style.display = 'block';
+
+    // Verberg de boodschap na 3 seconden
+    setTimeout(() => {
+        successMessage.style.display = 'none';
+    }, 3000);
+}
+
+// Dynamisch de hoogte van de navbar berekenen en toepassen
+function adjustContentPadding() {
+    const navbar = document.getElementById('navbar');
+    const mainContent = document.getElementById('main-content');
+    const navbarHeight = navbar.offsetHeight; // Hoogte van de navbar
+    mainContent.style.paddingTop = `${navbarHeight}px`; // Dynamische padding
+}
+
+// Pas de padding aan bij laden en bij window resize
+window.addEventListener('load', adjustContentPadding);
+window.addEventListener('resize', adjustContentPadding);
 
 
 // Initialisatie van het spel
