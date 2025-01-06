@@ -104,8 +104,14 @@
                 const messageElement = document.getElementById('message');
 
                 if (response.status === 201) {
-                    messageElement.textContent = 'Registratie geslaagd! Je kunt nu inloggen.';
+                    messageElement.textContent = 'Registratie geslaagd! Je wordt doorgestuurd naar de inlogpagina...';
                     messageElement.className = 'message success';
+                    messageElement.style.display = 'block';
+
+                    // Wacht 3 seconden en navigeer naar inlog.html
+                    setTimeout(() => {
+                        window.location.href = 'inlog.html';
+                    }, 3000);
                 } else {
                     const errorData = await response.json();
                     messageElement.textContent = errorData.message || 'Registratie mislukt.';
