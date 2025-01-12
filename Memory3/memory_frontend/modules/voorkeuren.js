@@ -1,3 +1,5 @@
+import { fetchWithAuth } from './auth.js';
+
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('jwt');
     const userId = localStorage.getItem('userId'); // Zorg dat dit is ingesteld bij inloggen
@@ -10,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Haal bestaande voorkeuren op
     try {
-        const response = await fetch(`http://localhost:8000/api/player/${userId}/preferences`, {
+        const response = await fetchWithAuth(`http://localhost:8000/api/player/${userId}/preferences`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Accept': 'application/json',
@@ -41,7 +43,7 @@ document.getElementById('preferences-form').addEventListener('submit', async (ev
     const color_found = document.getElementById('color_found').value;
 
     try {
-        const response = await fetch(`http://localhost:8000/api/player/${userId}/preferences`, {
+        const response = await fetchWithAuth(`http://localhost:8000/api/player/${userId}/preferences`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,

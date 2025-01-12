@@ -1,6 +1,7 @@
 import { fetchImages } from './api.js';
 import { setCardColor, shuffleArray, getElement, resetCards, formatTime  } from './utilities.js';
 import { refreshTopFive } from './backend.js';
+import { fetchWithAuth } from './auth.js';
 
 // DOM-elementen en globale variabelen
 const grid = getElement('.grid-container');
@@ -294,7 +295,7 @@ async function endGame() {
     };
 
     try {
-        const response = await fetch('http://localhost:8000/game/save', {
+        const response = await fetchWithAuth('http://localhost:8000/game/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -527,7 +528,7 @@ async function applyUserPreferences() {
     if (!token || !userId) return;
 
     try {
-        const response = await fetch(`http://localhost:8000/api/player/${userId}/preferences`, {
+        const response = await fetchWithAuth(`http://localhost:8000/api/player/${userId}/preferences`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Accept': 'application/json',
