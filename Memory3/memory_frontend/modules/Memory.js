@@ -259,15 +259,61 @@ function updateAverageTimeUI() {
 }
 
 // Eindig het spel
-function endGame() {
+async function endGame() {
     clearInterval(timerInterval);
 
     // Bereken de speeltijd
     const timeTaken = Math.floor((Date.now() - startTime) / 1000);
     document.getElementById('final-time').textContent = timeTaken;
 
-    // Highscores bijwerken
-    const playerName = prompt("Gefeliciteerd! Vul je naam in voor de highscores:", "Naam");
+    // Haal de token en de gebruikers-ID uit localStorage
+    const token = localStorage.getItem('jwt');
+    const username = localStorage.getItem('username');
+
+    if (!token || !username) {
+        alert('Je moet ingelogd zijn om het spel op te slaan.');
+        return;
+    }
+
+    // Vraag API en kaartkleuren op uit de DOM
+    const api = document.getElementById('imageSource').value;
+    const colorClosed = document.getElementById('kaartkleur').value;
+    const colorFound = document.getElementById('gevonden').value;
+
+    // Maak het payload object voor de game
+    const gameData = {
+        id: 1, // Vervang door echte speler-ID indien nodig
+        score: timeTaken,
+        api: api,
+        color_closed: colorClosed,
+        color_found: colorFound,
+    };
+
+    try {
+        const response = await fetch('http://localhost:8000/game/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(gameData),
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log('Game succesvol opgeslagen:', result);
+            alert('Je spel is succesvol opgeslagen!');
+        } else {
+            console.error('Fout bij het opslaan van de game:', await response.text());
+            alert('Er is een probleem opgetreden bij het opslaan van je spel.');
+        }
+    } catch (error) {
+        console.error('Fout tijdens het opslaan van de game:', error);
+        alert('Er is een probleem opgetreden bij het opslaan van je spel.');
+    }
+
+    // // Highscores bijwerken
+    // const playerName = prompt("Gefeliciteerd! Vul je naam in voor de highscores:", "Naam");
 
     // ******** oude highscores ************
     // const highscores = loadHighscores();
@@ -283,9 +329,9 @@ function endGame() {
     // // Update de UI
     // updateHighscoreUI();
 
-    // Opslaan en bijwerken van gemiddelde speeltijd
-    savePlaytime(timeTaken);
-    updateAverageTimeUI();
+    // // Opslaan en bijwerken van gemiddelde speeltijd
+    // savePlaytime(timeTaken);
+    // updateAverageTimeUI();
 
     // Toon het modale venster
     const modal = document.getElementById('winModal');
@@ -468,7 +514,7 @@ if (message === 'success') {
 
 // Initialisatie van het spel
 (async function init() {
-    updateHighscoreUI();
+    //updateHighscoreUI();
     updateAverageTimeUI();
     const pairCount = boardSize / 2;
     await initializeImages('picsum', pairCount); // Standaard bron is Picsum
