@@ -20,6 +20,28 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 });
 
+export async function refreshTopFive() {
+    try {
+        const scoresResponse = await fetch('http://localhost:8000/scores', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+        });
+
+        if (scoresResponse.ok) {
+            const scores = await scoresResponse.json();
+            const lowestScores = getLowestScores(scores);
+            updateTopFive(lowestScores);
+        } else {
+            console.error('Kon de top 5 scores niet ophalen.');
+        }
+    } catch (error) {
+        console.error('Fout bij het verversen van de top 5:', error.message);
+    }
+}
+
+
 function getLowestScores(scores) {
     const playerScores = {};
 

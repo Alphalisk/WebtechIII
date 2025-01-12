@@ -1,5 +1,6 @@
 import { fetchImages } from './api.js';
 import { setCardColor, shuffleArray, getElement, resetCards, formatTime  } from './utilities.js';
+import { refreshTopFive } from './backend.js';
 
 // DOM-elementen en globale variabelen
 const grid = getElement('.grid-container');
@@ -303,6 +304,10 @@ async function endGame() {
             const result = await response.json();
             console.log('Game succesvol opgeslagen:', result);
             alert('Je spel is succesvol opgeslagen!');
+
+            // Ververs de top 5 scores en gemiddelde score
+            await refreshTopFive();
+            updateAverageTimeUI();
         } else {
             console.error('Fout bij het opslaan van de game:', await response.text());
             alert('Er is een probleem opgetreden bij het opslaan van je spel.');
