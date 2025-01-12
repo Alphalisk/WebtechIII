@@ -282,7 +282,7 @@ async function endGame() {
 
     // Maak het payload object voor de game
     const gameData = {
-        id: 1, // Vervang door echte speler-ID indien nodig
+        id: localStorage.getItem('userId'), // Vervang door echte speler-ID indien nodig
         score: timeTaken,
         api: api,
         color_closed: colorClosed,
