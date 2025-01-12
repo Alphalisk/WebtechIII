@@ -61,27 +61,17 @@
     </style>
 </head>
 <body>
-    <h1 style="text-align: center;">Voorkeuren</h1>
+    <h1 style="text-align: center;">E-mail wijzigen</h1>
     <form id="preferences-form">
-        <label for="api"><b>Favoriete API:</b></label>
-        <select id="api">
-            <option value="picsum">Foto's</option>
-            <option value="dog">Honden</option>
-            <option value="cat">Katten</option>
-            <option value="fox">Vossen</option>
-        </select>
-
-        <label for="kaartkleur"><b>Kleur voor gesloten kaarten:</b></label>
-        <input type="color" id="kaartkleur" value="#1deb76">
-
-        <label for="color_found"><b>Kleur voor gevonden kaarten:</b></label>
-        <input type="color" id="color_found" value="#c026a9">
+        <!-- E-mail wijziging -->
+        <label for="email">E-mailadres:</label>
+        <input type="email" id="email" placeholder="Voer je e-mailadres in" required>
 
         <button type="submit">Opslaan</button>
     </form>
 
     <div id="message" class="message" style="display: none;"></div>
 
-    <script type="module" src="modules/voorkeuren.js"></script>
+    <script type="module" src="modules/email.js"></script>
 </body>
 </html>

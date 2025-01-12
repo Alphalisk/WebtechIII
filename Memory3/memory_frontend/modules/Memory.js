@@ -48,6 +48,7 @@ function checkLoginStatus(action = null) {
         navOptions.innerHTML = `
             <span>Welkom, ${username}!</span>
             <a href="voorkeuren.html">Voorkeuren</a>
+            <a href="email.html">E-mail</a>
             <a id="logout-button">Uitloggen</a>
         `;
 
