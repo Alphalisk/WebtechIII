@@ -1,3 +1,5 @@
+import { fetchWithAuth } from './auth.js';
+
 document.addEventListener('DOMContentLoaded', async function () {
     const token = localStorage.getItem('jwt');
     const userId = localStorage.getItem('userId');
@@ -14,7 +16,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Haal e-mailadres op bij het laden
     try {
-        const response = await fetch(`http://localhost:8000/api/player/${userId}/email`, {
+        const response = await fetchWithAuth(`http://localhost:8000/api/player/${userId}/email`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -45,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/api/player/${userId}/email`, {
+            const response = await fetchWithAuth(`http://localhost:8000/api/player/${userId}/email`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
 
             if (response.ok) {
-                messageElement.textContent = 'E-mailadres succesvol bijgewerkt!';
+                messageElement.textContent = 'E-mailadres succesvol bijgewerkt! Je wordt teruggebracht naar de hoofdpagina...';
                 messageElement.className = 'message success';
 
                 // Wacht 2 seconden en navigeer naar index.html
