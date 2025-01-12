@@ -47,6 +47,7 @@ function checkLoginStatus(action = null) {
         // Toon de welkomsttekst en uitlogknop
         navOptions.innerHTML = `
             <span>Welkom, ${username}!</span>
+            <a href="voorkeuren.html">Voorkeuren</a>
             <a id="logout-button">Uitloggen</a>
         `;
 
