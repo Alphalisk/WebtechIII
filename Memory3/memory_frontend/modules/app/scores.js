@@ -56,42 +56,6 @@ function getLowestScores(scores) {
     return Object.values(playerScores);
 }
 
-function displayMessage(message, type) {
-    const messageBar = document.createElement('div');
-    messageBar.textContent = message;
-    messageBar.style.position = 'fixed';
-    messageBar.style.top = '0';
-    messageBar.style.left = '0';
-    messageBar.style.width = '100%';
-    messageBar.style.padding = '10px';
-    messageBar.style.color = 'white';
-    messageBar.style.textAlign = 'center';
-    messageBar.style.zIndex = '1000';
-
-    if (type === 'success') {
-        messageBar.style.backgroundColor = '#04AA6D';
-    } else if (type === 'error') {
-        messageBar.style.backgroundColor = 'red';
-    }
-
-    document.body.appendChild(messageBar);
-
-    setTimeout(() => {
-        messageBar.remove();
-    }, 3000);
-}
-
-function displayGames(games) {
-    const gamesContainer = document.getElementById('games');
-    gamesContainer.innerHTML = ''; // Wis bestaande spellen
-
-    games.forEach((game, index) => {
-        const gameElement = document.createElement('div');
-        gameElement.textContent = `Spel ${index + 1}: Score - ${game.score}, Datum - ${new Date(game.date).toLocaleDateString('nl-NL')}`;
-        gamesContainer.appendChild(gameElement);
-    });
-}
-
 function updateTopFive(scores) {
     const highscoreList = document.querySelector('aside ol'); // Verwijzing naar de lijst in de HTML
     highscoreList.innerHTML = ''; // Wis de huidige lijst

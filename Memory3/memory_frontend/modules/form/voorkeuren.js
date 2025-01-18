@@ -1,8 +1,8 @@
-import { fetchWithAuth } from './auth.js';
+import { fetchWithAuth } from '../app/auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const token = localStorage.getItem('jwt');
-    const userId = localStorage.getItem('userId'); // Zorg dat dit is ingesteld bij inloggen
+    const userId = localStorage.getItem('userId');
 
     if (!token || !userId) {
         alert('Je moet ingelogd zijn om voorkeuren te bekijken.');

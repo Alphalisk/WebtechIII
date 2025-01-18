@@ -1,4 +1,4 @@
-import { fetchWithAuth } from './auth.js';
+import { fetchWithAuth } from '../app/auth.js';
 
 document.addEventListener('DOMContentLoaded', async function () {
     const token = localStorage.getItem('jwt');
