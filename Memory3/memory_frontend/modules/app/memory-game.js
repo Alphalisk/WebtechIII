@@ -1,8 +1,9 @@
+// Imports
 import { fetchImages } from './api.js';
+import { endGame } from './end-game.js';
 import { checkLoginStatus } from './user-login.js';
-import { setCardColor, shuffleArray, getElement, resetCards, formatTime  } from './utilities.js';
-import { refreshTopFive } from './scores.js';
-import { fetchWithAuth } from './auth.js';
+import { applyUserPreferences } from './user-preferences.js';
+import { setCardColor, shuffleArray, getElement, formatTime  } from './utilities.js';
 
 // DOM-elementen en globale variabelen
 const grid = getElement('.grid-container');
@@ -14,27 +15,29 @@ const foundPairsDisplay = getElement('#foundPairsDisplay');
 const startButton = getElement('.start-button');
 const boardSizeSelector = getElement('#boardSize');
 const boardSizeMessage = getElement('#boardSizeMessage');
-const defaultHighscores = [
-    { name: "Barack Obama", time: 200 },
-    { name: "Bernie Sanders", time: 300 },
-    { name: "Hillary Clinton", time: 400 },
-    { name: "Donald Trump", time: 500 },
-    { name: "Jeb Bush", time: 600 },
-];
 
-// Controleer of er een queryparameter is voor succes
+// Variabelen
 const urlParams = new URLSearchParams(window.location.search);
 const message = urlParams.get('message');
-
 let timeBarInterval = null; // Interval voor de tijdsbalk
 const timeBarElement = getElement('.time-bar'); // De tijdsbalk
 const maxShowTime = 3000; // Maximale toontijd in milliseconden (3 seconden)
-let timerInterval = null;
-let startTime = null;
 let boardSize = 36; // Standaard 6x6
 let openedCards = [];
 let foundPairs = 0;
 let images = [];
+let startTime = null;
+let timerInterval = null;
+
+// Functie om afbeeldingen te laden
+async function initializeImages(source, pairCount) {
+    try {
+        const fetchedImages = await fetchImages(source, pairCount);
+        images = shuffleArray([...fetchedImages, ...fetchedImages]); // Verdubbel en schud
+    } catch (error) {
+        console.error('Fout bij het ophalen van afbeeldingen:', error);
+    }
+}
 
 // Start de timer
 function startTimer() {
@@ -59,16 +62,6 @@ function resetTimer() {
     stopTimer();
     const timerElement = document.querySelector('.timer');
     timerElement.textContent = '00:00';
-}
-
-// Functie om afbeeldingen te laden
-async function initializeImages(source, pairCount) {
-    try {
-        const fetchedImages = await fetchImages(source, pairCount);
-        images = shuffleArray([...fetchedImages, ...fetchedImages]); // Verdubbel en schud
-    } catch (error) {
-        console.error('Fout bij het ophalen van afbeeldingen:', error);
-    }
 }
 
 // Functie om het bord te bouwen
@@ -134,7 +127,9 @@ function handleCardClick(card) {
         
         // Controleer of het spel voorbij is
         if (foundPairs === images.length / 2) {
-            endGame();
+            clearInterval(timerInterval);
+            endGame(startTime);
+            updateAverageTimeUI();
         }
     }
 }
@@ -177,13 +172,6 @@ function updateFoundPairsDisplay() {
     foundPairsDisplay.textContent = foundPairs;
 }
 
-// speeltijd van gebruiker saven
-function savePlaytime(time) {
-    const playtimes = JSON.parse(localStorage.getItem('playtimes')) || [];
-    playtimes.push(time);
-    localStorage.setItem('playtimes', JSON.stringify(playtimes));
-}
-
 // gemiddelde speeltijd van gebruiker berekenen
 function calculateAverageTime() {
     const playtimes = JSON.parse(localStorage.getItem('playtimes')) || [];
@@ -198,90 +186,6 @@ function updateAverageTimeUI() {
     const averageTime = calculateAverageTime();
     const averageTimeElement = document.getElementById('averageTime');
     averageTimeElement.textContent = `${averageTime}s`;
-}
-
-// Eindig het spel
-async function endGame() {
-    clearInterval(timerInterval);
-
-    // Bereken de speeltijd
-    const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-    document.getElementById('final-time').textContent = timeTaken;
-
-    // Haal de token en de gebruikers-ID uit localStorage
-    const token = localStorage.getItem('jwt');
-    const username = localStorage.getItem('username');
-
-    if (!token || !username) {
-        alert('Je moet ingelogd zijn om het spel op te slaan.');
-        return;
-    }
-
-    // Vraag API en kaartkleuren op uit de DOM
-    const api = document.getElementById('imageSource').value;
-    const colorClosed = document.getElementById('kaartkleur').value;
-    const colorFound = document.getElementById('gevonden').value;
-
-    // Maak het payload object voor de game
-    const gameData = {
-        id: localStorage.getItem('userId'), // Vervang door echte speler-ID indien nodig
-        score: timeTaken,
-        api: api,
-        color_closed: colorClosed,
-        color_found: colorFound,
-    };
-
-    try {
-        const response = await fetchWithAuth('http://localhost:8000/game/save', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify(gameData),
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log('Game succesvol opgeslagen:', result);
-            alert('Je spel is succesvol opgeslagen!');
-
-            // Ververs de top 5 scores en gemiddelde score
-            await refreshTopFive();
-            updateAverageTimeUI();
-        } else {
-            console.error('Fout bij het opslaan van de game:', await response.text());
-            alert('Er is een probleem opgetreden bij het opslaan van je spel.');
-        }
-    } catch (error) {
-        console.error('Fout tijdens het opslaan van de game:', error);
-        alert('Er is een probleem opgetreden bij het opslaan van je spel.');
-    }
-
-    // // Highscores bijwerken
-    // const playerName = prompt("Gefeliciteerd! Vul je naam in voor de highscores:", "Naam");
-
-    // ******** oude highscores ************
-    // const highscores = loadHighscores();
-
-    // // Voeg de nieuwe score toe en sorteer
-    // highscores.push({ name: playerName || "Onbekend", time: timeTaken });
-    // highscores.sort((a, b) => a.time - b.time); // Sorteer op tijd (asc)
-    // if (highscores.length > 5) highscores.pop(); // Beperk tot top 5
-
-    // // Sla bijwerkte highscores op
-    // saveHighscores(highscores);
-
-    // // Update de UI
-    // updateHighscoreUI();
-
-    // // Opslaan en bijwerken van gemiddelde speeltijd
-    // savePlaytime(timeTaken);
-    // updateAverageTimeUI();
-
-    // Toon het modale venster
-    const modal = document.getElementById('winModal');
-    modal.style.display = 'block';
 }
 
 // Functie om het modale venster te sluiten wanneer de gebruiker op de sluitknop klikt
@@ -326,27 +230,6 @@ function resetGame() {
     // Verberg de bordgrootte-melding
     boardSizeMessage.style.display = 'none';
 }
-
-// ******* Oude manier van scores ****************8
-// // Laad highscores uit localStorage of stel standaard in
-// function loadHighscores() {
-//     const storedHighscores = JSON.parse(localStorage.getItem('highscores'));
-//     return storedHighscores || defaultHighscores;
-// }
-
-// // Sla highscores op in localStorage
-// function saveHighscores(highscores) {
-//     localStorage.setItem('highscores', JSON.stringify(highscores));
-// }
-
-// function updateHighscoreUI() {
-//     const highscoreList = document.querySelector('aside ol'); // Verwijzing naar de lijst in de HTML
-//     const highscores = loadHighscores();
-
-//     highscoreList.innerHTML = highscores
-//         .map(score => `<li>${score.name}: ${score.time}s</li>`)
-//         .join('');
-// }
 
 // Eventlistener voor het starten van een nieuw spel
 startButton.addEventListener('click', () => {
@@ -457,44 +340,12 @@ if (message === 'success') {
     }, 3000);
 }
 
-// Haal voorkeuren gebruiker op en pas deze toe
-async function applyUserPreferences() {
-    const token = localStorage.getItem('jwt');
-    const userId = localStorage.getItem('userId');
-
-    if (!token || !userId) return;
-
-    try {
-        const response = await fetchWithAuth(`http://localhost:8000/api/player/${userId}/preferences`, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Accept': 'application/json',
-            },
-        });
-
-        if (response.ok) {
-            const preferences = await response.json();
-            if (preferences) {
-                imageSourceSelector.value = preferences.preferred_api || 'picsum';
-                kaartkleurInput.value = preferences.color_closed || '#1deb76';
-                gevondenKleurInput.value = preferences.color_found || '#c026a9';
-            }
-        } else {
-            console.error('Kon voorkeuren niet ophalen.');
-        }
-    } catch (error) {
-        console.error('Fout bij het ophalen van voorkeuren:', error.message);
-    }
-}
-
-
 // Initialisatie van het spel
 (async function init() {
-    //updateHighscoreUI();
     checkLoginStatus();
     await applyUserPreferences();
     updateAverageTimeUI();
     const pairCount = boardSize / 2;
-    await initializeImages(imageSourceSelector.value, pairCount); // Standaard bron is Picsum
+    await initializeImages(imageSourceSelector.value, pairCount);
     resetGame();
 })();
