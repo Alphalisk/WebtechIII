@@ -1,16 +1,3 @@
-// Pas een kleur toe op een specifieke kaart
-export function setCardColor(card, state, colors) {
-    const { closed, open, found } = colors;
-
-    if (state === 'closed') {
-        card.style.backgroundColor = closed;
-    } else if (state === 'open') {
-        card.style.backgroundColor = open;
-    } else if (state === 'found') {
-        card.style.backgroundColor = found;
-    }
-}
-
 // Schud een array willekeurig
 export function shuffleArray(array) {
     return array.sort(() => Math.random() - 0.5);

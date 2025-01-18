@@ -3,7 +3,8 @@ import { fetchImages } from './api.js';
 import { endGame } from './end-game.js';
 import { checkLoginStatus } from './user-login.js';
 import { applyUserPreferences } from './user-preferences.js';
-import { setCardColor, shuffleArray, getElement, formatTime  } from './utilities.js';
+import { shuffleArray, getElement, formatTime } from './utilities.js';
+import { setCardColor, updateAverageTimeUI, updateFoundPairsDisplay  } from './UI.js';
 
 // DOM-elementen en globale variabelen
 const grid = getElement('.grid-container');
@@ -11,7 +12,6 @@ const kaartkleurInput = getElement('#kaartkleur');
 const openKleurInput = getElement('#open');
 const gevondenKleurInput = getElement('#gevonden');
 const imageSourceSelector = getElement('#imageSource');
-const foundPairsDisplay = getElement('#foundPairsDisplay');
 const startButton = getElement('.start-button');
 const boardSizeSelector = getElement('#boardSize');
 const boardSizeMessage = getElement('#boardSizeMessage');
@@ -162,30 +162,9 @@ function checkForMatch() {
         setCardColor(card1, 'found', getCardColors());
         setCardColor(card2, 'found', getCardColors());
         foundPairs++;
-        updateFoundPairsDisplay();
+        updateFoundPairsDisplay(foundPairs);
         openedCards = []; // Reset geopende kaarten
     }
-}
-
-// Update de gevonden paren in de UI
-function updateFoundPairsDisplay() {
-    foundPairsDisplay.textContent = foundPairs;
-}
-
-// gemiddelde speeltijd van gebruiker berekenen
-function calculateAverageTime() {
-    const playtimes = JSON.parse(localStorage.getItem('playtimes')) || [];
-    if (playtimes.length === 0) return 0;
-
-    const total = playtimes.reduce((sum, time) => sum + time, 0);
-    return Math.floor(total / playtimes.length);
-}
-
-// UI gemiddelde speeltijd gebruiker weergeven
-function updateAverageTimeUI() {
-    const averageTime = calculateAverageTime();
-    const averageTimeElement = document.getElementById('averageTime');
-    averageTimeElement.textContent = `${averageTime}s`;
 }
 
 // Resterende Tijdbar
@@ -211,7 +190,7 @@ function resetGame() {
     foundPairs = 0;
     openedCards = [];
     resetTimer(); // Reset de timer
-    updateFoundPairsDisplay();
+    updateFoundPairsDisplay(foundPairs);
     clearInterval(timeBarInterval); // Stop de tijdsbalk
     timeBarElement.style.width = '0%'; // Reset de balk
 

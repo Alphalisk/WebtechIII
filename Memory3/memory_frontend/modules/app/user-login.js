@@ -57,8 +57,3 @@ export function checkLoginStatus(action = null) {
         }
     }
 }
-
-// Controleer loginstatus bij laden van de pagina
-document.addEventListener('DOMContentLoaded', () => {
-    checkLoginStatus(); // Standaardactie bij laden
-});
