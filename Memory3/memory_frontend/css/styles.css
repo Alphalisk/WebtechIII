@@ -108,7 +108,7 @@
     border-radius: 8px; /* Optioneel: laat de afbeelding dezelfde hoeken volgen als de kaart */
 }
 
-.kleurselectie {
+.game-button {
     background: linear-gradient(to bottom,var(--white), var(--bordergray));
     border: 1px var(--borderblack) solid;
     width: 110px;
