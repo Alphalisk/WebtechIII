@@ -27,3 +27,16 @@ export function resetCards(cards, defaultColor) {
         card.classList.remove('open', 'found');
     });
 }
+
+// Functie om kleuren op te halen uit de inputs
+export function getCardColors() {
+    const kaartkleurInput = getElement('#kaartkleur');
+    const openKleurInput = getElement('#open');
+    const gevondenKleurInput = getElement('#gevonden');
+
+    return {
+        closed: kaartkleurInput.value || '#0d793c',
+        open: openKleurInput.value || '#1deb76',
+        found: gevondenKleurInput.value || '#c026a9',
+    };
+}

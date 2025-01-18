@@ -3,7 +3,7 @@ import { fetchImages } from './api.js';
 import { endGame } from './end-game.js';
 import { checkLoginStatus } from './user-login.js';
 import { applyUserPreferences } from './user-preferences.js';
-import { shuffleArray, getElement, formatTime } from './utilities.js';
+import { getCardColors, shuffleArray, getElement, formatTime } from './utilities.js';
 import { setCardColor, updateAverageTimeUI, updateFoundPairsDisplay  } from './UI.js';
 
 // DOM-elementen en globale variabelen
@@ -28,41 +28,6 @@ let foundPairs = 0;
 let images = [];
 let startTime = null;
 let timerInterval = null;
-
-// Functie om afbeeldingen te laden
-async function initializeImages(source, pairCount) {
-    try {
-        const fetchedImages = await fetchImages(source, pairCount);
-        images = shuffleArray([...fetchedImages, ...fetchedImages]); // Verdubbel en schud
-    } catch (error) {
-        console.error('Fout bij het ophalen van afbeeldingen:', error);
-    }
-}
-
-// Start de timer
-function startTimer() {
-    if (timerInterval) return; // Timer al gestart
-
-    startTime = Date.now();
-    timerInterval = setInterval(() => {
-        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-        const timerElement = document.querySelector('.timer');
-        timerElement.textContent = formatTime(elapsedTime);
-    }, 1000);
-}
-
-// Stop de timer
-function stopTimer() {
-    clearInterval(timerInterval);
-    timerInterval = null;
-}
-
-// Reset de timer
-function resetTimer() {
-    stopTimer();
-    const timerElement = document.querySelector('.timer');
-    timerElement.textContent = '00:00';
-}
 
 // Functie om het bord te bouwen
 function buildBoard() {
@@ -89,15 +54,6 @@ function buildBoard() {
 
         grid.appendChild(card);
     });
-}
-
-// Functie om kleuren op te halen uit de inputs
-function getCardColors() {
-    return {
-        closed: kaartkleurInput.value || '#0d793c',
-        open: openKleurInput.value || '#1deb76',
-        found: gevondenKleurInput.value || '#c026a9',
-    };
 }
 
 // Klikhandler voor een kaart
@@ -167,6 +123,25 @@ function checkForMatch() {
     }
 }
 
+// Reset het spel
+function resetGame() {
+    foundPairs = 0;
+    openedCards = [];
+    resetTimer(); // Reset de timer
+    updateFoundPairsDisplay(foundPairs);
+    clearInterval(timeBarInterval); // Stop de tijdsbalk
+    timeBarElement.style.width = '0%'; // Reset de balk
+
+    // Update de grootte van het bord
+    const pairCount = boardSize / 2; // Helften voor paren
+    initializeImages(imageSourceSelector.value, pairCount).then(() => {
+        buildBoard(); // Bouw het bord opnieuw
+    });
+
+    // Verberg de bordgrootte-melding
+    boardSizeMessage.style.display = 'none';
+}
+
 // Resterende Tijdbar
 function startTimeBar() {
     clearInterval(timeBarInterval); // Stop vorige interval als die bestaat
@@ -185,23 +160,29 @@ function startTimeBar() {
     }, 100); // Update elke 100ms
 }
 
-// Reset het spel
-function resetGame() {
-    foundPairs = 0;
-    openedCards = [];
-    resetTimer(); // Reset de timer
-    updateFoundPairsDisplay(foundPairs);
-    clearInterval(timeBarInterval); // Stop de tijdsbalk
-    timeBarElement.style.width = '0%'; // Reset de balk
+// Start de timer
+function startTimer() {
+    if (timerInterval) return; // Timer al gestart
 
-    // Update de grootte van het bord
-    const pairCount = boardSize / 2; // Helften voor paren
-    initializeImages(imageSourceSelector.value, pairCount).then(() => {
-        buildBoard(); // Bouw het bord opnieuw
-    });
+    startTime = Date.now();
+    timerInterval = setInterval(() => {
+        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        const timerElement = document.querySelector('.timer');
+        timerElement.textContent = formatTime(elapsedTime);
+    }, 1000);
+}
 
-    // Verberg de bordgrootte-melding
-    boardSizeMessage.style.display = 'none';
+// Stop de timer
+function stopTimer() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+}
+
+// Reset de timer
+function resetTimer() {
+    stopTimer();
+    const timerElement = document.querySelector('.timer');
+    timerElement.textContent = '00:00';
 }
 
 // Eventlistener voor het starten van een nieuw spel
@@ -238,6 +219,16 @@ imageSourceSelector.addEventListener('change', async (event) => {
     const newSource = event.target.value;
     await updateImages(newSource); // Werk de afbeeldingen bij
 });
+
+// Functie om afbeeldingen te laden
+async function initializeImages(source, pairCount) {
+    try {
+        const fetchedImages = await fetchImages(source, pairCount);
+        images = shuffleArray([...fetchedImages, ...fetchedImages]); // Verdubbel en schud
+    } catch (error) {
+        console.error('Fout bij het ophalen van afbeeldingen:', error);
+    }
+}
 
 // Hiermee wordt het bord geupdate met nieuwe afbeeldingen bij een wijziging van API.
 async function updateImages(newSource) {
