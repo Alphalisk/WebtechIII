@@ -188,12 +188,6 @@ function updateAverageTimeUI() {
     averageTimeElement.textContent = `${averageTime}s`;
 }
 
-// Functie om het modale venster te sluiten wanneer de gebruiker op de sluitknop klikt
-function closeModal() {
-    const modal = document.getElementById('winModal');
-    modal.style.display = 'none'; // Verberg het modaal
-}
-
 // Resterende Tijdbar
 function startTimeBar() {
     clearInterval(timeBarInterval); // Stop vorige interval als die bestaat
@@ -255,20 +249,9 @@ boardSizeSelector.addEventListener('change', (event) => {
     boardSizeMessage.style.display = 'block'; // Toon de melding
 });
 
-// Voeg een event listener toe voor de sluitknop
-document.querySelector('.close-btn').addEventListener('click', closeModal);
-
 // Logica voor het resetten van het spel
 document.querySelector('.reset-button').addEventListener('click', () => {
     resetGame(); // Reset het spel
-});
-
-// Voeg een event listener toe om het modaal te sluiten als de gebruiker ergens buiten het modaal klikt
-window.addEventListener('click', function(event) {
-    const modal = document.getElementById('winModal');
-    if (event.target === modal) {
-        closeModal();
-    }
 });
 
 // Een Eventlistener voor een API-update met nieuwe afbeeldingen.

@@ -60,4 +60,21 @@ export async function endGame(startTime) {
     // Toon het modale venster
     const modal = document.getElementById('winModal');
     modal.style.display = 'block';
+
+    // Voeg een event listener toe om het modaal te sluiten als de gebruiker ergens buiten het modaal klikt
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('winModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Voeg een event listener toe voor de sluitknop
+    document.querySelector('.close-btn').addEventListener('click', closeModal);
+}
+
+// Functie om het modale venster te sluiten wanneer de gebruiker op de sluitknop klikt
+function closeModal() {
+    const modal = document.getElementById('winModal');
+    modal.style.display = 'none'; // Verberg het modaal
 }
